@@ -1,0 +1,12 @@
+$color: #487c81;
+
+:root{
+  --primary-color:#487c81;
+
+  --header-height: 110px;
+  --side-bar-width: 255px;
+}
+
+#nprogress .bar {
+  background: var(--primary-color) !important; //自定义颜色
+}
