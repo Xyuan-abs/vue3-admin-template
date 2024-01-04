@@ -29,11 +29,8 @@ import SideBar from './components/side-bar/index.vue'
 
 <style lang="scss" scoped>
 .app-wrapper {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
   .main-container {
-    flex: 1;
+    width: 100vw;
     height: 100vh;
     padding-top: var(--header-height);
     padding-left: var(--side-bar-width);

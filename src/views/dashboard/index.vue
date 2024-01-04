@@ -1,11 +1,4 @@
-<script setup>
-import { mock } from '@/api/mock.js'
-import InsFormInline from '@/components/ins-form-inline/index.vue'
-
-const test = ref('')
-
-onMounted(async () => {})
-</script>
+<script setup></script>
 
 <script>
 export default {
@@ -14,9 +7,7 @@ export default {
 </script>
 
 <template>
-  <div class="app-container">
-    <el-input v-model="test"></el-input>
-  </div>
+  <div class="app-container">首页</div>
 </template>
 
 <style scoped>

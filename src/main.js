@@ -6,6 +6,7 @@ import store from './store'
 // element-plus 组件
 import ElementPlus from 'element-plus'
 import '@/styles/element-plus.scss'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 // element-plus icon
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -24,7 +25,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 setupPlugins(app)
 
-app.use(ElementPlus, { zIndex: 3000 })
+app.use(ElementPlus, { zIndex: 3000, locale: zhCn })
 app.use(router)
 app.use(store)
 

@@ -17,9 +17,6 @@ body {
     Microsoft YaHei, Arial, sans-serif;
 }
 
-label {
-  font-weight: 700;
-}
 
 #app {
   min-height: 100%;
@@ -68,11 +65,3 @@ ul li {
   list-style-type: none;
 }
 
-// main-container global css
-.app-container {
- 
-}
-
-.main-container > [class*='-container'] {
-  margin: 24px;
-}

@@ -1,7 +1,8 @@
 <!-- 
   名称：分类
  -->
-<script setup>
+<script setup name="IncenseClassify">
+import InsPanel from '@/components/ins-panel/index'
 import InsFormInline from '@/components/ins-form-inline/index'
 import InsTable from '@/components/ins-table/index'
 import InsPager from '@/components/ins-pager/index'
@@ -52,29 +53,33 @@ onMounted(() => {
 <template>
   <div class="follow-container">
     <!-- 查询表单 -->
-    <ins-form-inline
-      v-model:searchParams="searchParams"
-      class="direction-row"
-      :dynamic-form="dynamicForm"
-      :label-width="80"
-      @submit="handleSearch"
-    />
+    <ins-panel class="direction-row">
+      <ins-form-inline
+        v-model:searchParams="searchParams"
+        class="direction-row"
+        :dynamic-form="dynamicForm"
+        :label-width="80"
+        @submit="handleSearch"
+      />
+    </ins-panel>
 
     <!-- 操作 -->
-    <div class="direction-row">
-      <el-button :icon="Plus" type="primary" @click="handleAdd">添加</el-button>
-    </div>
+    <ins-panel class="direction-row">
+      <div class="direction-row">
+        <el-button :icon="Plus" type="primary" @click="handleAdd">添加</el-button>
+      </div>
 
-    <!-- 表格 -->
-    <ins-table
-      class="direction-row"
-      :loading="loading"
-      :table-data="tableData"
-      :table-head="tableHead"
-    />
+      <!-- 表格 -->
+      <ins-table
+        class="direction-row"
+        :loading="loading"
+        :table-data="tableData"
+        :table-head="tableHead"
+      />
 
-    <!-- 分页 -->
-    <ins-pager :pager-params="pagerParams" @change="fetchData" />
+      <!-- 分页 -->
+      <ins-pager class="direction-row" :pager-params="pagerParams" @change="fetchData" />
+    </ins-panel>
 
     <!-- 新增、编辑弹窗 -->
     <edit-dialog ref="EditDialogRef" @save="fetchData" />
