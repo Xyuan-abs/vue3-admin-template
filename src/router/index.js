@@ -21,11 +21,6 @@ export const staticRoutes = [
     component: () => import('@/views/404.vue'),
     hidden: true,
   },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-  },
 ]
 
 /**
@@ -34,7 +29,7 @@ export const staticRoutes = [
  */
 export const asyncRoutes = formatterRoutes([
   {
-    path: '/dashboard',
+    path: '/',
     component: Layout,
     children: [
       {
@@ -42,6 +37,20 @@ export const asyncRoutes = formatterRoutes([
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
           title: '首页',
+          icon: 'House',
+        },
+      },
+    ],
+  },
+  {
+    path: '/classify',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/incense-classify/index.vue'),
+        meta: {
+          title: '分类',
           icon: 'House',
         },
       },

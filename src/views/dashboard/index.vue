@@ -1,4 +1,7 @@
 <script setup>
+import { mock } from '@/api/mock.js'
+import InsFormInline from '@/components/ins-form-inline/index.vue'
+
 const test = ref('')
 
 onMounted(async () => {})

@@ -1,3 +1,3 @@
 export default {
-  title: 'vue3 admin template',
+  title: '售后系统',
 }
