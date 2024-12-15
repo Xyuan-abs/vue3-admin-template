@@ -1,17 +1,10 @@
 <!-- 
   名称：行内表单（查询搜索表单）
-  版本：1.0.0 
-  作者：Xyuan
-  时间：2023年2月13日13:23:44
  -->
 <script setup>
-import insSelect from '../ins-form/components/select/index.vue'
-import SelectLoadmore from '../ins-form/components/select-loadmore/index.vue'
+import InsSelect from '../ins-form/components/select/index.vue'
 
 import useSetPlaceholder from '../ins-form/composables/useSetPlaceholder'
-
-import { Search } from '@element-plus/icons-vue'
-import { useVModel } from '@vueuse/core'
 
 const props = defineProps({
   dynamicForm: {
@@ -42,41 +35,78 @@ const props = defineProps({
   searchParams: {
     type: Object,
     default: () => ({}),
-    required: true,
   },
   labelWidth: { type: Number, default: 70 },
   showLabel: { type: Boolean, default: true },
 })
-
-const dynamicFormRef = ref(null)
 const emit = defineEmits(['update:searchParams', 'submit'])
-const searchParamsVM = useVModel(props, 'searchParams', emit) // 值的双向绑定
+
+const searchParamsVM = ref({})
+const dynamicFormRef = ref(null)
 const { getPlaceholder } = useSetPlaceholder()
+
+watch(
+  () => props.searchParams,
+  (newValue) => {
+    searchParamsVM.value = props.dynamicForm.form.reduce((prev, cur) => {
+      const key = cur.name
+      let value
+
+      if (cur.valueMap) {
+        value = cur.valueMap.map((d) => newValue[d])
+      } else {
+        value = newValue[key]
+      }
+
+      return Object.assign({}, prev, {
+        [key]: value,
+      })
+    }, {})
+  },
+  { deep: true, immediate: true }
+)
+
+// 更新v-model
+const updateValue = () => {
+  const result = props.dynamicForm.form.reduce((prev, cur) => {
+    const key = cur.name
+    const value = searchParamsVM.value[key]
+    let data
+
+    if (value || value === 0) {
+      if (Array.isArray(value) && cur.valueMap) {
+        data = cur.valueMap.reduce(
+          (p, c, i) =>
+            Object.assign({}, p, {
+              [c]: value[i],
+            }),
+          {}
+        )
+      } else {
+        data = {
+          [key]: value,
+        }
+      }
+    }
+
+    return Object.assign({}, prev, data)
+  }, {})
+
+  console.log('result', result)
+
+  emit('update:searchParams', result)
+}
 
 // 提交
 const submit = () => {
-  const formData = props.dynamicForm.form.reduce(
-    (prev, cur) => Object.assign(prev, { [cur.name]: toRaw(cur.value) }),
-    {}
-  )
-
-  Object.keys(formData).forEach((key) => {
-    const value = formData[key]
-    if (value || value === 0) {
-      searchParamsVM.value[key] = value
-    } else {
-      delete searchParamsVM.value[key]
-    }
-  })
-
-  // emit('update:searchParams', formData)
-  emit('submit', formData)
-  console.log('formData', formData)
+  updateValue()
+  emit('submit')
 }
 
 // 重置
 const resetForm = () => {
   dynamicFormRef.value.resetFields()
+  updateValue()
 }
 
 // 是否折叠
@@ -85,22 +115,26 @@ const isFold = ref(true)
 const handleChangeFold = () => {
   isFold.value = !isFold.value
 }
+
+defineExpose({
+  resetForm,
+})
 </script>
 
 <template>
   <div class="form-inline">
-    <el-form ref="dynamicFormRef" inline :model="dynamicForm">
+    <el-form ref="dynamicFormRef" inline :model="searchParamsVM">
       <el-form-item
         v-for="(formItem, index) in dynamicForm.form"
-        v-show="index < foldLimit || !isFold"
+        v-show="(index < foldLimit || !isFold) && formItem.isShow !== false"
         :key="'formItem' + index"
         :label="showLabel ? formItem.label : ''"
-        :prop="'form[' + index + '].value'"
+        :prop="formItem.name"
       >
         <!-- input -->
         <el-input
           v-if="formItem.element === 'input'"
-          v-model="formItem.value"
+          v-model="searchParamsVM[formItem.name]"
           :placeholder="getPlaceholder(formItem)"
           v-bind="formItem.attrs"
         />
@@ -108,18 +142,8 @@ const handleChangeFold = () => {
         <!-- select -->
         <ins-select
           v-if="formItem.element === 'select'"
-          v-model:modelValue="formItem.value"
+          v-model="searchParamsVM[formItem.name]"
           :form-item="formItem"
-          :placeholder="getPlaceholder(formItem)"
-          v-bind="formItem.attrs"
-        />
-
-        <!-- 分页、远程搜索 select -->
-        <select-loadmore
-          v-if="formItem.element === 'select-loadmore'"
-          v-model:modelValue="formItem.value"
-          :form-item="formItem"
-          :index="index"
           :placeholder="getPlaceholder(formItem)"
           v-bind="formItem.attrs"
         />
@@ -127,7 +151,7 @@ const handleChangeFold = () => {
         <!-- date-picker -->
         <el-date-picker
           v-if="formItem.element === 'date-picker'"
-          v-model="formItem.value"
+          v-model="searchParamsVM[formItem.name]"
           clearable
           end-placeholder="终止日期"
           :placeholder="getPlaceholder(formItem)"
@@ -138,7 +162,7 @@ const handleChangeFold = () => {
       </el-form-item>
 
       <el-form-item :class="{ 'is-full': dynamicForm.form.length > foldLimit && !isFold }">
-        <el-button :icon="Search" type="primary" @click="submit">查询</el-button>
+        <el-button icon="Search" type="primary" @click="submit">查询</el-button>
         <el-button @click="resetForm">重置</el-button>
         <el-button
           v-if="dynamicForm.form.length > foldLimit"
@@ -148,11 +172,10 @@ const handleChangeFold = () => {
         >
           <span v-if="isFold">展开</span>
           <span v-else>合并</span>
-          <vab-icon
-            class="vab-dropdown"
-            :class="{ 'vab-dropdown-active': isFold }"
-            icon="arrow-up-s-line"
-          />
+
+          <el-icon class="icon-dropdown" :class="{ 'icon-dropdown-active': !isFold }">
+            <ArrowDown />
+          </el-icon>
         </el-button>
       </el-form-item>
     </el-form>
@@ -169,6 +192,13 @@ const handleChangeFold = () => {
     .el-input,
     .el-select {
       width: 200px;
+    }
+    .icon-dropdown {
+      display: inline-block;
+      transition: all 0.3s ease-in-out;
+      &.icon-dropdown-active {
+        transform: rotate(180deg);
+      }
     }
   }
   .is-full {

@@ -1,4 +1,10 @@
-<script setup></script>
+<script setup>
+import { getUserInfo } from '@/api/user.js'
+
+onMounted(() => {
+  getUserInfo()
+})
+</script>
 
 <script>
 export default {

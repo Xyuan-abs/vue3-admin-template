@@ -40,6 +40,6 @@
     "unplugin-icons": "^0.18.1",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-define-options": "^1.4.1",
-    "vite": "^5.0.10"
+    "vite": "^5.0.11"
   }
 }

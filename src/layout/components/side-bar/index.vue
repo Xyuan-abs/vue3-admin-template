@@ -24,12 +24,12 @@ function handleSelect(path) {
 </script>
 
 <template>
-  <view class="side-bar">
+  <div class="side-bar">
     <logo class="logo" />
     <el-menu :default-active="activeMenu" @select="handleSelect">
       <side-bar-item v-for="(menu, i) in menuList" :key="'item' + i" :item="menu" />
     </el-menu>
-  </view>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -1,7 +1,17 @@
 /**
- * 获取表单项数据
- * @param {*} formItem 表单项配置
- * @returns
+ * 获取表单项数据  select,cascader，radio,checkbox
+ * @param {Object} formItem 表单项配置
+ * @param { object }  componentProps
+ * @example
+ *   componentProps:{
+ *     api:()=>{}, // 获取选项的接口
+ *     params:{},  // 参数
+ *     keywordKey:'keyword', // 远程搜索时 输入的关键字在参数中对应的key
+ *     immediate:false, // 是否立即执行
+ *     resultField:'data', // 获取到的值对应的key,多个层级以 . 拼接，如：data.list
+ *     labelKey:'label', // 选项 label 对应的 key
+ *     valueKey:'value', // 选项 value 对应的 key
+ *   }
  */
 export default function (formItem) {
   const loading = ref(false)
@@ -10,7 +20,7 @@ export default function (formItem) {
 
   /* 监听参数变化 获取表单项数据 */
   if (componentProps) {
-    const immediate = componentProps.immediate
+    const immediate = !!componentProps.immediate
     !componentProps.params && (componentProps.params = {})
 
     watch(() => componentProps.params, handleFetchOptions, { deep: true, immediate })
@@ -33,7 +43,7 @@ export default function (formItem) {
   function formatterOptions(res) {
     if (!res) return []
 
-    const { resultField = 'data', labelKey = 'label', valueKey = 'value' } = componentProps
+    const { resultField = 'data', labelFmt, labelKey = 'label', valueKey = 'value' } = componentProps
 
     let list = []
     if (Array.isArray(res)) {
@@ -41,11 +51,12 @@ export default function (formItem) {
     }
     if (Object.prototype.toString.call(res) === '[object Object]') {
       const keys = resultField.split('.')
-      list = keys.reduce((prev, cur) => prev[cur], res)
+      list = keys.reduce((prev, cur) => prev[cur], res) ?? []
     }
 
     return list.map((d) => ({
-      label: d[labelKey],
+      ...d,
+      label: labelFmt ? labelFmt(d) : d[labelKey],
       value: d[valueKey],
     }))
   }

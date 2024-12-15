@@ -1,8 +1,5 @@
 <!-- 
   名称：card
-  版本：1.0.0 
-  作者：Xyuan
-  时间：2023年12月21日11:48:50
  -->
 <script setup>
 defineProps({
@@ -34,6 +31,8 @@ defineProps({
 
 <style lang="scss" scoped>
 .ins-card {
+  &__header {
+  }
   :deep(.el-card__header) {
     background-color: var(--el-color-primary-light-9);
   }

@@ -7,8 +7,6 @@ import { ArrowRight } from '@element-plus/icons-vue'
 const routes = useRoute()
 
 const breadcrumbList = computed(() => {
-  console.log('routes.matched', routes.matched)
-
   const list = routes.matched
     .filter((d, i) => {
       if (routes.matched[i + 1]?.path === d.path) {

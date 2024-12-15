@@ -1,11 +1,8 @@
 <!-- 
   名称：拷贝
-  版本：1.0.0 
-  作者：Xyuan
-  时间：2023年2月24日09:48:43
  -->
 <script setup>
-import { clipboard } from '@/utils/clipboard.js'
+import { clipboard } from '@/utils/clipboard'
 
 const $baseMessage = inject('$baseMessage')
 
@@ -19,9 +16,9 @@ const handleClipboard = async () => {
   const isSuccess = await clipboard(text)
 
   if (isSuccess) {
-    $baseMessage('已复制到剪切板', 'success')
+    $baseMessage({ message: '已复制到剪切板', type: 'success' })
   } else {
-    $baseMessage('复制失败', 'error')
+    $baseMessage({ message: '复制失败', type: 'error' })
   }
 }
 </script>

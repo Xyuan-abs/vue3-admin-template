@@ -9,10 +9,6 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 import DefineOptions from 'unplugin-vue-define-options/vite'
 
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -54,8 +50,12 @@ export default defineConfig({
   base: '/', //公共基础路径
   resolve: {
     alias: {
-      '@': resolve('src'),
+      '@': path.resolve(__dirname, 'src'), // 配置别名
     },
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+  },
+  define: {
+    // enable hydration mismatch details in production build
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
   },
 })

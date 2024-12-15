@@ -7,31 +7,55 @@
  */
 export default function (dynamicFormRef, dynamicForm, emit) {
   /**
-   * 转换表单 到 保存数据
+   * 表单校验
+   * @returns
+   */
+  function validateForm() {
+    return dynamicFormRef.value.validate().catch(() => {})
+  }
+
+  /**
+   * 获取表单提交数据
    * hidden=true 和 isShow=false 的区别
    * hidden不展示/不生成值，isShow不展示/生成值
+   *
+   * @returns
    */
-  function toSaveData() {
-    let result = {}
-    return new Promise((resolve) => {
-      dynamicFormRef.value.validate((valid) => {
-        if (valid) {
-          dynamicForm?.form.forEach((d) => {
-            // 隐藏的 不生成属性值
-            if (d.hidden) return
+  function getSaveData() {
+    const result = dynamicForm?.form.reduce((prev, cur) => {
+      // 隐藏的 不生成属性值
+      if (cur.hidden) return prev
+      // 忽略的 不生成属性值
+      if (cur.ignoreOnSave) return prev
 
-            let value = d.value
-            //值的格式化
-            typeof d.value === 'string' && (value = d.value.trim())
+      let data = {}
 
-            result[d.name] = value
-          })
-        } else {
-          result = {}
-        }
-        resolve(Object.keys(result).length > 0 && JSON.parse(JSON.stringify(result)))
-      })
-    })
+      let value = cur.value
+      //值的格式化
+      typeof cur.value === 'string' && (value = cur.value.trim())
+
+      if (cur.valueFmt) {
+        data = { ...cur.valueFmt(cur.value) }
+      } else if (Array.isArray(value) && cur.valueMap) {
+        data = cur.valueMap.reduce((p, c, i) => Object.assign({}, p, { [c]: value[i] }), {})
+      } else {
+        data = { [cur.name]: value }
+      }
+
+      return Object.assign({}, prev, data)
+    }, {})
+
+    return result
+  }
+
+  /**
+   * 转换表单 到 保存数据
+   */
+  async function toSaveData() {
+    const isValidate = await validateForm()
+    if (!isValidate) return false
+
+    return getSaveData()
   }
 
   // 提交表单
@@ -48,6 +72,14 @@ export default function (dynamicFormRef, dynamicForm, emit) {
     }
   }
 
+  // 清除表单项校验
+  function clearValidate(name) {
+    const index = dynamicForm.form.findIndex((d) => d.name === name)
+    if (index >= 0) {
+      dynamicFormRef.value.clearValidate(`form[${index}].value`)
+    }
+  }
+
   // 重置整个表单
   function resetForm() {
     dynamicFormRef.value.resetFields()
@@ -55,30 +87,41 @@ export default function (dynamicFormRef, dynamicForm, emit) {
       if (formItem.element === 'upload') {
         formItem.attr.fileList = []
       }
+
+      // if (formItem.isShow !== undefined) {
+      //   formItem.isShow = false
+      // }
+      // if (formItem.hidden !== undefined) {
+      //   formItem.hidden = true
+      // }
     })
+
     emit('reset')
   }
 
   // 校验字段
   function validateField(props, callback) {
-    dynamicFormRef.value.validateField(props, callback).catch((e) => {})
+    dynamicFormRef.value.validateField(props, callback).catch(() => {})
   }
 
   // 表单项 change 事件
   const handleChange = (formItem, index) => {
     validateField(`form[${index}].value`)
     if (formItem.events?.change) {
-      formItem.events?.change(formItem)
+      formItem.events?.change(formItem, dynamicForm, index)
     }
     emit('change', formItem, index)
   }
 
   return {
+    getSaveData,
+    validateField,
+    validateForm,
     toSaveData,
     submitForm,
     resetFields,
     resetForm,
-    validateField,
+    clearValidate,
     handleChange,
   }
 }

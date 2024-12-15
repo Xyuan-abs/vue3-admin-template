@@ -4,7 +4,6 @@
 <script setup>
 import Breadcrumb from './Breadcrumb.vue'
 import UserCenter from './UserCenter.vue'
-import PageTabs from './PageTabs.vue'
 </script>
 
 <template>
@@ -12,9 +11,6 @@ import PageTabs from './PageTabs.vue'
     <div class="top">
       <breadcrumb />
       <user-center />
-    </div>
-    <div class="bottom">
-      <page-tabs />
     </div>
   </div>
 </template>
@@ -24,6 +20,7 @@ import PageTabs from './PageTabs.vue'
   position: fixed;
   top: 0;
   right: 0;
+  z-index: 1;
   left: var(--side-bar-width);
   height: var(--header-height);
 
@@ -36,14 +33,6 @@ import PageTabs from './PageTabs.vue'
     align-items: center;
     justify-content: space-between;
     height: 60px;
-  }
-  .bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    height: 50px;
-    border-top: 1px solid #f6f6f6;
   }
 }
 </style>

@@ -3,7 +3,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 /* Layout */
 import Layout from '@/layout/index.vue'
-import AppMain from '@/layout/components/AppMain.vue'
 
 /**
  * 固定路由
@@ -37,73 +36,23 @@ export const asyncRoutes = formatterRoutes([
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
           title: '首页',
-          icon: 'House',
+          icon: 'HomeFilled',
         },
       },
     ],
   },
   {
-    path: '/classify',
+    path: '/example',
     component: Layout,
     children: [
       {
         path: '',
-        component: () => import('@/views/incense-classify/index.vue'),
+        component: () => import('@/views/example/index.vue'),
         meta: {
-          title: '分类',
-          icon: 'House',
+          title: '示例',
+          icon: 'Menu',
         },
       },
-    ],
-  },
-  {
-    path: '/test',
-    component: Layout,
-    redirect: '/test/test1',
-    meta: {
-      title: '测试',
-      icon: 'House',
-    },
-    children: [
-      {
-        path: 'test1',
-        component: () => import('@/views/test/index.vue'),
-        meta: {
-          title: '测试1',
-          icon: 'House',
-        },
-      },
-      {
-        path: 'test2',
-        component: () => import('@/views/test/index.vue'),
-        meta: {
-          title: '测试2',
-          icon: 'House',
-        },
-      },
-      // {
-      //   path: 'test3',
-      //   component: AppMain,
-      //   children: [
-      //     {
-      //       path: '',
-      //       component: () => import('@/views/test/index.vue'),
-      //       meta: {
-      //         title: '测试3',
-      //         icon: 'House',
-      //       },
-      //     },
-      //     {
-      //       path: 'test',
-      //       component: () => import('@/views/test/index.vue'),
-      //       meta: {
-      //         title: '测试3-2',
-      //         activePath: '/test/test3',
-      //       },
-      //       hidden: true,
-      //     },
-      //   ],
-      // },
     ],
   },
 ])

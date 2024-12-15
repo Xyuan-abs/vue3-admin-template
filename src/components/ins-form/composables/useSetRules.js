@@ -19,7 +19,11 @@ export default function () {
       // 设置默认提示
       if (requiredRule && !requiredRule.message) {
         // 不同类型 表单项对应不同的默认提示语
-        const elementTypeMap = [['input', 'inputNumber'], ['select', 'date-picker'], ['upload']]
+        const elementTypeMap = [
+          ['input', 'inputNumber'],
+          ['select', 'radio', 'checkbox', 'date-picker', 'city', 'rate'],
+          ['upload'],
+        ]
         const messageMap = {
           '-1': `${formItem.label}不能为空`,
           0: `请输入${formItem.label}`,

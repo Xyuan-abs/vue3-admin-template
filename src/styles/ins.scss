@@ -35,10 +35,6 @@ div[class*=ins-message-]{
 }
 
 
-.main-container > [class*='-container'] {
-  margin: 24px;
-}
-
 .direction-row{
   &+.direction-row{
     margin-top: 24px;

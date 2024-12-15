@@ -1,12 +1,9 @@
 <!-- 
   名称：表格
-  版本：1.0.0 
-  作者：Xyuan
-  时间：2023年2月13日14:58:14
  -->
 <script setup>
-import TableItem from './components/table-item/index.vue'
-import insCopy from '@/components/ins-copy/index.vue'
+import TableItem from './components/table-item/index'
+import InsCopy from '@/components/ins-copy/index'
 
 import useSetAttrs from './composables/useSetAttrs.js'
 import useSetEvent from './composables/useSetEvent.js'
@@ -98,13 +95,18 @@ defineExpose({
         <!-- 自定义列 动态组件 -->
         <component :is="head.component" v-if="head.component" :head="head" />
 
+        <!-- 
+
+
+         -->
         <!-- 默认列 -->
         <el-table-column
           v-else
           :align="align"
           :label="head.label"
-          :prop="head.prop"
           v-bind="head.attrs"
+          :label-class-name="head.required ? 'is-required' : ''"
+          :prop="head.prop"
         >
           <template #default="{ row, column, $index }">
             <slot :column="column" :head="head" :index="$index" :name="head.prop" :row="row">
@@ -172,8 +174,22 @@ defineExpose({
   }
 
   :deep(.el-table) {
+    .el-table__header {
+      .is-required {
+        .cell {
+          &::before {
+            display: inline;
+            margin-right: 4px;
+            font-size: 14px;
+            color: var(--el-color-danger);
+            content: '*';
+          }
+        }
+      }
+    }
+
     .el-table__cell {
-      z-index: unset;
+      // z-index: unset;
     }
     &.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
       // $color: var(--el-color-primary-light-9);

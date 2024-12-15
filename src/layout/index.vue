@@ -1,8 +1,5 @@
 <!-- 
   名称：layout布局
-  版本：1.0.0 
-  作者：Xyuan
-  时间：
  -->
 <script setup>
 import AppHeader from './components/AppHeader.vue'
@@ -15,7 +12,10 @@ import SideBar from './components/side-bar/index.vue'
     <side-bar></side-bar>
     <div class="main-container">
       <app-header class="app-header" />
-      <app-main />
+      <div class="app-main">
+        <app-main />
+      </div>
+      <p class="copyright">Copyright &copy; {{ new Date().getFullYear() }} Vue Admin Template</p>
     </div>
   </div>
   <!-- 回到顶部按钮 -->
@@ -28,14 +28,23 @@ import SideBar from './components/side-bar/index.vue'
 </template>
 
 <style lang="scss" scoped>
+$copyrightHeight: 48px;
 .app-wrapper {
   .main-container {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     padding-top: var(--header-height);
     padding-left: var(--side-bar-width);
+
     .app-main {
-      height: calc(100vh - var(--header-height));
+      min-height: calc(100vh - var(--header-height) - #{$copyrightHeight});
+      padding: 24px;
+    }
+    .copyright {
+      height: $copyrightHeight;
+      line-height: $copyrightHeight;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.45);
     }
   }
 }

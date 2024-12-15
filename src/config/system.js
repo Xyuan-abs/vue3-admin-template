@@ -1,3 +1,3 @@
 export default {
-  title: '售后系统',
+  title: '后台管理系统',
 }

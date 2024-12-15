@@ -9,14 +9,13 @@ export default function () {
     'tree-select': 'tree-select',
     'date-picker': 'date-picker',
     'number-with-unit': 'number-with-unit',
-    'select-loadmore': 'select-loadmore',
     checkbox: 'checkbox',
     radio: 'radio',
-    inlineForm: 'inlineForm',
-    fileList: 'fileList',
+    'file-list': 'file-list',
     switch: 'switch',
     'icon-select': 'icon-select',
     city: 'city',
+    rate: 'rate',
   }
 
   return {

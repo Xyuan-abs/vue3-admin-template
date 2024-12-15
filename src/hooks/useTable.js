@@ -1,105 +1,67 @@
-import { mock } from '@/api/mock.js'
+import useFetch from './useFetch'
+import { isRef } from 'vue'
 
 /**
  * 表格
  * @returns
  */
-export default function ({ fetchDataApi = mock, deleteApi = mock }, EditDialogRef) {
-  const $baseConfirm = inject('$baseConfirm')
-  const $baseMessage = inject('$baseMessage')
+export default function (
+  fetchDataApi,
+  searchParams = {},
+  { hasPage = true, page = 1, size = 10 } = {}
+) {
+  /** 分页 */
+  const pagerParams = reactive({
+    page,
+    size,
+    total: 0,
+  })
 
-  // 获取表格数据
-  const loading = ref(false)
+  /** 表格数据 */
   const tableData = ref([])
 
-  // 获取表格数据
-  const fetchData = async (params) => {
-    loading.value = true
-    const res = await fetchDataApi(params).catch((e) => console.error(e))
-    loading.value = false
-
-    if (res?.success) {
-      tableData.value = res?.data ?? []
-    } else {
+  /** 获取表格数据 */
+  const { isFetching, executeFetch } = useFetch(fetchDataApi, {
+    onSuccess: (res) => {
+      console.log('res ', res)
+      if (hasPage) {
+        tableData.value = res.data?.list ?? []
+        pagerParams.total = res.data?.total ?? 0
+      } else {
+        tableData.value = res.data
+      }
+    },
+    onError: () => {
       tableData.value = []
+      pagerParams.total = 0
+    },
+  })
+
+  /** 重置分页 搜索数据 */
+  function searchData() {
+    pagerParams.page = 1
+    fetchData()
+  }
+
+  /** 执行 获取表格数据 */
+  function fetchData() {
+    const { page, size } = pagerParams
+
+    const params = {
+      ...(hasPage ? { page, pageSize: size } : {}),
+      ...(isRef(searchParams) ? searchParams.value : searchParams),
     }
 
-    return res
-  }
+    console.log('params ', params)
 
-  // 新建
-  const handleAdd = (...arg) => {
-    EditDialogRef.value.open(undefined, ...arg)
-  }
-
-  // 编辑
-  const handleEdit = (row, ...arg) => {
-    EditDialogRef.value.open(row, ...arg)
-  }
-
-  // 查看
-  const handleShowDetail = (row) => {
-    EditDialogRef.value.open(row, true /* isDetail */)
-  }
-
-  // 多选框切换事件
-  const selection = []
-  const handleSelectionChange = (selectionList) => {
-    selection.length = 0
-    selection.push(...selectionList)
-  }
-
-  // 删除
-  const handleDelete = async (id) => {
-    return new Promise((resolve) => {
-      $baseConfirm('你确定要删除当前项吗', null, async () => {
-        const params = [{ id }]
-        const res = await deleteApi(params).catch((e) => console.error(e))
-        if (res?.success) {
-          $baseMessage('已删除', 'success')
-        } else {
-          $baseMessage(res?.msg || '删除失败', 'error')
-        }
-        resolve(res?.success)
-      })
-    })
-  }
-
-  // 批量操作
-  const handleMultiOpt = (api, name = '') => {
-    // 判断是否有勾选
-    if (!selection.length) {
-      $baseMessage('至少勾选一项', 'warning')
-      return false
-    }
-
-    return new Promise((resolve, reject) => {
-      $baseConfirm(`你确定要${name}勾选的这${selection.length}项吗`, null, async () => {
-        const params = selection.map((d) => ({
-          id: d.id,
-        }))
-        const res = await api(params).catch((e) => console.error(e))
-        if (res?.success) {
-          $baseMessage(`已${name}`, 'success')
-          resolve(res)
-        } else {
-          $baseMessage(res?.msg || `${name}失败`, 'error')
-          reject(res)
-        }
-      })
-    })
+    return executeFetch(params)
   }
 
   return {
     tableData,
-    loading,
-    selection,
+    loading: isFetching,
+    pagerParams,
     fetchData,
-    handleAdd,
-    handleEdit,
-    handleShowDetail,
-    handleSelectionChange,
-    handleDelete,
-    handleMultiOpt,
+    searchData,
   }
 }

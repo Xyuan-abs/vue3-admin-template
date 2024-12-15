@@ -1,8 +1,5 @@
 <!-- 
   名称：带单位的input-number
-  版本：1.0.0 
-  作者：Xyuan
-  时间：2021年11月4日09:39:42
  -->
 <script setup>
   import { useVModel } from '@vueuse/core'

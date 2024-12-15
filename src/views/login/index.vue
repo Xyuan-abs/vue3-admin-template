@@ -4,7 +4,7 @@ import systemConfig from '@/config/system.js'
 import { useUserStore } from '@/store/modules/user'
 import LoginBgImage from '@/assets/login_images/login_banner.webp'
 
-import { getSessionStorage } from '@/utils/storage'
+import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 
 const $baseMessage = inject('$baseMessage')
 
@@ -12,14 +12,12 @@ const route = useRoute()
 const router = useRouter()
 
 const userStore = useUserStore()
-const { login } = userStore
 
 const formRef = ref(null)
 const form = ref({
-  username: '',
+  account: '',
   password: '',
   isRememberPassword: false,
-  isAutoLogin: false,
 })
 
 const loading = ref(false)
@@ -30,32 +28,37 @@ const handleRoute = () => {
 }
 
 const handleLogin = async () => {
-  if (!form.value.username || !form.value.password) {
-    return $baseMessage('账号或密码为空', 'warning')
+  const { account, password, isRememberPassword } = form.value
+
+  if (!account || !password) {
+    return $baseMessage({ message: `账号或密码为空`, type: 'warning' })
   }
 
-  try {
-    loading.value = true
-    await login(form.value).catch(() => {})
+  loading.value = true
+  const res = await userStore.login({ account, password }).catch(() => {})
+  loading.value = false
+
+  if (res?.success) {
     await router.push(handleRoute())
-  } finally {
-    loading.value = false
+
+    const accountInfo = { account, isRememberPassword }
+    if (isRememberPassword) {
+      Object.assign(accountInfo, { password })
+    }
+    setLocalStorage('accountInfo', accountInfo)
   }
 }
 onBeforeMount(() => {
-  const { username, password, isRememberPassword, isAutoLogin } =
-    getSessionStorage('accountInfo') || {}
+  const {
+    account = '',
+    password = '',
+    isRememberPassword = false,
+  } = getLocalStorage('accountInfo') || {}
 
-  form.value.username = username || 'admin'
-  form.value.password = password || '123456'
-
-  form.value.isRememberPassword = isRememberPassword || false
-  form.value.isAutoLogin = isAutoLogin || false
-})
-
-onMounted(() => {
-  if (form.value.isAutoLogin) {
-    handleLogin()
+  form.value = {
+    account,
+    password,
+    isRememberPassword,
   }
 })
 
@@ -72,13 +75,8 @@ watchEffect(() => {
       </div>
       <el-form ref="formRef" class="login-form" label-position="left" :model="form">
         <div class="title">{{ systemConfig.title }}</div>
-        <el-form-item prop="username">
-          <el-input
-            v-model.trim="form.username"
-            placeholder="请输入账号"
-            tabindex="1"
-            type="text"
-          />
+        <el-form-item prop="account">
+          <el-input v-model.trim="form.account" placeholder="请输入账号" tabindex="1" type="text" />
         </el-form-item>
         <el-form-item prop="password">
           <el-input
