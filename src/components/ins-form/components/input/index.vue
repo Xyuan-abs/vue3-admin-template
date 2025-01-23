@@ -2,7 +2,11 @@
   名称：input
  -->
 <script setup>
-import { useVModel } from '@vueuse/core'
+/**
+ * componentProps:{
+ *  isTrim:false, //移除前后空格
+ * }
+ */
 
 import { debounce } from 'lodash'
 
@@ -23,12 +27,27 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-/* 值的双向绑定 */
-const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
+const inputValue = ref('')
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    inputValue.value = newValue
+  },
+  {
+    immediate: true,
+  }
+)
 
 const handleChange = debounce(() => {
+  const isTrim = props.formItem.componentProps?.isTrim ?? false
+
+  const value = isTrim ? inputValue.value.trim() : inputValue.value
+
+  inputValue.value = value
+  emit('update:modelValue', value)
   emit('change')
-}, 200)
+}, 0)
 
 onMounted(() => {})
 </script>
@@ -36,14 +55,28 @@ onMounted(() => {})
 <template>
   <div class="ins-input">
     <el-input
-      v-model="modelValue"
+      v-if="props.formItem.componentProps && props.formItem.componentProps.isTrim"
+      v-model.trim="inputValue"
       :autosize="{ minRows: 4, maxRows: 6 }"
       type="text"
       v-bind="$attrs"
       @input="handleChange"
     >
-      <template #suffix v-if="formItem.attrs?.suffix || formItem.attrs?.unit">
-        {{ formItem.attrs.suffix || formItem.attrs?.unit }}
+      <template v-if="formItem.attrs?.suffix" #suffix>
+        {{ formItem.attrs.suffix }}
+      </template>
+    </el-input>
+
+    <el-input
+      v-else
+      v-model="inputValue"
+      :autosize="{ minRows: 4, maxRows: 6 }"
+      type="text"
+      v-bind="$attrs"
+      @input="handleChange"
+    >
+      <template v-if="formItem.attrs?.suffix" #suffix>
+        {{ formItem.attrs.suffix }}
       </template>
     </el-input>
   </div>

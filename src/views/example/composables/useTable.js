@@ -10,7 +10,8 @@ const mockFetch = () => {
         {
           id: 1,
           name: '网点名称',
-          company: '网点公司名称',
+          company: '公司1',
+          companyId: '1',
           city: '地址',
           principal: '网点负责人',
           phone: '网点负责人电话',

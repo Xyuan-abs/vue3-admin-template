@@ -1,3 +1,5 @@
-import Vue from 'vue'
-const EventBus = new Vue()
-export default EventBus
+import mitt from 'mitt'
+
+const eventBus = mitt()
+
+export default eventBus

@@ -191,7 +191,7 @@ export function isNotEmpty(value) {
   if (Array.isArray(value)) {
     return Boolean(value.length)
   } else {
-    return value || value === 0
+    return value !== void 0
   }
 }
 

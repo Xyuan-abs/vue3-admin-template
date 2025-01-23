@@ -11,6 +11,7 @@ import InsCascader from './components/cascader/index.vue'
 import InsTreeSelect from './components/tree-select/index.vue'
 import InsCity from './components/city/index.vue'
 import InsFileList from './components/file-list/index.vue'
+import InsSingleImgUpload from './components/single-img-upload/index.vue'
 
 import InputNumberWithUnit from './components/input-number-with-unit/index.vue'
 import InputPassword from './components/input-password/index.vue'
@@ -18,8 +19,10 @@ import InputPassword from './components/input-password/index.vue'
 import useSetRules from './composables/useSetRules'
 import useSetPlaceholder from './composables/useSetPlaceholder'
 import useSubmit from './composables/useSubmit'
-import useElement from './composables/useElement'
 import useSetFormValue from './composables/useSetFormValue'
+import useFormItemLink from './composables/useFormItemLink'
+
+import { ELEMENT } from './composables/useElement'
 
 /**
  * @example
@@ -29,18 +32,17 @@ import useSetFormValue from './composables/useSetFormValue'
  *   value: '12121', // 表单项的值
  *   valueMap:[],// value为数组时的 value格式化  value:[1,2],valueMap:['a','b'] -> { a:1,b:2}
  *   valueFmt:(value)=>({a:value}),// 在提交时 格式化value
- *   element: 'input', // 表单项类型
+ *   element: ELEMENT.INPUT, // 表单项类型
  *   hidden:false, // 是否隐藏 v-if
  *   isShow:true, // 是否隐藏 v-show
  *   ignoreOnSave:false, // 是否在提交时忽略当前字段
  *   options:[], // 选项
  *   attrs:{}, // element组件 attrs
- *   componentProps:{},  // 自定义组件属性 目前分为获取选项数据 （useFetchData.js）和图片上传 (file-list/index.vue)
+ *   componentProps:{},  // 自定义组件属性，详细配置看各组件注释
  *   cols:3, // 表单项占的列数  cols:'max'->占一整行
  *   hiddenLabel:false, // 不展示label
  *   rules:[],// 校验规则
  *   required:false,// 是否必填
- *   isTrim:true，// 清除左右空格（input）
  *   tip:'', // 表单项提示
  *   onSetValue:(data,formItem)=>{},// 回显数据时触发
  * }
@@ -56,12 +58,12 @@ const props = defineProps({
           name: 'input',
           label: '标题',
           value: '12121',
-          element: 'input',
+          element: ELEMENT.INPUT,
         },
         {
           name: 'select',
           label: '标题',
-          element: 'select',
+          element: ELEMENT.SELECT,
           value: null,
           options: [
             {
@@ -88,7 +90,6 @@ const colStyle = computed(() => ({
   'column-gap': '10px',
 }))
 
-const { elements } = useElement()
 const { setRules } = useSetRules()
 const { getPlaceholder } = useSetPlaceholder()
 const { setFormItemValue, setFormValue } = useSetFormValue(props.dynamicForm)
@@ -104,6 +105,8 @@ const {
   clearValidate,
   handleChange,
 } = useSubmit(dynamicFormRef, props.dynamicForm, emit)
+
+useFormItemLink(props.dynamicForm, clearValidate)
 
 // 暴露出去的 属性和方法
 defineExpose({
@@ -154,40 +157,28 @@ defineExpose({
         >
           <!-- slot -->
           <slot
-            v-if="formItem.element === elements.slot"
+            v-if="formItem.element === ELEMENT.SLOT"
             :form-item="formItem"
             :index="index"
             :name="formItem.name"
           ></slot>
 
           <!-- text -->
-          <ins-text v-else-if="formItem.element === elements.text" :form-item="formItem" />
+          <ins-text v-else-if="formItem.element === ELEMENT.TEXT" :form-item="formItem" />
 
           <!-- input -->
-          <template v-else-if="formItem.element === elements.input">
-            <ins-input
-              v-if="
-                formItem.isTrim !== false && (!formItem.attrs || formItem.attrs.type !== 'textarea')
-              "
-              v-model.trim="formItem.value"
-              :form-item="formItem"
-              :placeholder="getPlaceholder(formItem)"
-              v-bind="formItem.attrs"
-              @change="handleChange(formItem, index)"
-            />
-            <ins-input
-              v-else
-              v-model="formItem.value"
-              :form-item="formItem"
-              :placeholder="getPlaceholder(formItem)"
-              v-bind="formItem.attrs"
-              @change="handleChange(formItem, index)"
-            />
-          </template>
+          <ins-input
+            v-else-if="formItem.element === ELEMENT.INPUT"
+            v-model="formItem.value"
+            :form-item="formItem"
+            :placeholder="getPlaceholder(formItem)"
+            v-bind="formItem.attrs"
+            @change="handleChange(formItem, index)"
+          />
 
           <!-- password -->
           <input-password
-            v-else-if="formItem.element === elements.password"
+            v-else-if="formItem.element === ELEMENT.PASSWORD"
             v-model="formItem.value"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
@@ -196,7 +187,7 @@ defineExpose({
 
           <!-- select -->
           <ins-select
-            v-else-if="formItem.element === elements.select"
+            v-else-if="formItem.element === ELEMENT.SELECT"
             v-model:modelValue="formItem.value"
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
@@ -206,7 +197,7 @@ defineExpose({
 
           <!-- cascader -->
           <ins-cascader
-            v-else-if="formItem.element === elements.cascader"
+            v-else-if="formItem.element === ELEMENT.CASCADER"
             v-model:modelValue="formItem.value"
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
@@ -216,7 +207,7 @@ defineExpose({
 
           <!-- tree-select -->
           <ins-tree-select
-            v-else-if="formItem.element === elements['tree-select']"
+            v-else-if="formItem.element === ELEMENT.TREE_SELECT"
             v-model:modelValue="formItem.value"
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
@@ -226,7 +217,7 @@ defineExpose({
 
           <!-- date-picker -->
           <el-date-picker
-            v-else-if="formItem.element === elements['date-picker']"
+            v-else-if="formItem.element === ELEMENT.DATE_PICKER"
             v-model="formItem.value"
             clearable
             end-placeholder="终止日期"
@@ -239,7 +230,7 @@ defineExpose({
 
           <!-- 带单位的input-number -->
           <input-number-with-unit
-            v-else-if="formItem.element === elements['number-with-unit']"
+            v-else-if="formItem.element === ELEMENT.NUMBER_WITH_UNIT"
             v-model:modelValue="formItem.value"
             :form-item="formItem"
             :index="index"
@@ -248,7 +239,7 @@ defineExpose({
 
           <!-- checkbox -->
           <ins-checkbox
-            v-else-if="formItem.element === elements['checkbox']"
+            v-else-if="formItem.element === ELEMENT.CHECKBOX"
             v-model:modelValue="formItem.value"
             :form-item="formItem"
             v-bind="formItem.attrs"
@@ -257,7 +248,7 @@ defineExpose({
 
           <!-- radio -->
           <ins-radio
-            v-else-if="formItem.element === elements['radio']"
+            v-else-if="formItem.element === ELEMENT.RADIO"
             v-model:modelValue="formItem.value"
             :form-item="formItem"
             v-bind="formItem.attrs"
@@ -265,7 +256,7 @@ defineExpose({
           />
 
           <!-- fileList -->
-          <template v-else-if="formItem.element === elements['file-list']">
+          <template v-else-if="formItem.element === ELEMENT.FILE_LIST">
             <ins-file-list
               v-model:modelValue="formItem.value"
               :form-item="formItem"
@@ -274,9 +265,18 @@ defineExpose({
             />
           </template>
 
+          <!-- 单图片上传 -->
+          <ins-single-img-upload
+            v-else-if="formItem.element === ELEMENT.SINGLE_IMG_UPLOAD"
+            v-model="formItem.value"
+            v-bind="formItem.attrs"
+            :form-item="formItem"
+            @change="handleChange(formItem, index)"
+          />
+
           <!-- switch -->
           <el-switch
-            v-else-if="formItem.element === elements['switch']"
+            v-else-if="formItem.element === ELEMENT.SWITCH"
             v-model="formItem.value"
             v-bind="formItem.attrs"
             @change="handleChange(formItem, index)"
@@ -284,7 +284,7 @@ defineExpose({
 
           <!-- city -->
           <ins-city
-            v-else-if="formItem.element === elements['city']"
+            v-else-if="formItem.element === ELEMENT.CITY"
             v-model="formItem.value"
             v-bind="formItem.attrs"
             @change="handleChange(formItem, index)"
@@ -292,7 +292,7 @@ defineExpose({
 
           <!-- rate -->
           <el-rate
-            v-else-if="formItem.element === elements['rate']"
+            v-else-if="formItem.element === ELEMENT.RATE"
             v-model="formItem.value"
             v-bind="formItem.attrs"
             @change="handleChange(formItem, index)"

@@ -2,6 +2,7 @@ import { mock } from '@/api/mock'
 
 import useForm from '@/hooks/useForm'
 import { DIALOG_TYPE } from '@/hooks/useDialog'
+import { ELEMENT } from '@/components/ins-form/composables/useElement'
 
 const mockAdd = (...arg) => {
   return mock(...arg)
@@ -23,28 +24,60 @@ export default function (row, dialogType) {
         name: 'name',
         label: '网点名称',
         value: '',
-        element: 'input',
+        element: ELEMENT.INPUT,
         rules: [{ required: true }],
+        componentProps: {
+          isTrim: false,
+        },
       },
       {
-        name: 'company',
-        label: '网点公司名称',
+        name: 'companyId',
+        label: '网点公司',
         value: '',
-        element: 'input',
+        element: ELEMENT.SELECT,
+        options: [
+          { label: '公司1', value: '1' },
+          { label: '公司2', value: '2' },
+          { label: '公司3', value: '3' },
+        ],
         rules: [{ required: true }],
+        events: {},
+        linkage: {
+          person: {
+            value: () => '',
+            // hidden: (value) => value === '2',
+            required: (value) => value !== '1',
+            // disabled: (value) => value === '1',
+            // isShow: (value) => value === '1',
+            custom: (value) => ({ value: '' }),
+            params: (value) => value,
+          },
+        },
       },
+
       {
         name: 'phone',
-        label: '网点负责人电话',
+        label: '负责人电话',
         value: '',
-        element: 'input',
+        element: ELEMENT.INPUT,
         rules: [{ required: true }],
       },
       {
-        name: 'number',
-        label: '维修人数',
+        name: 'person',
+        label: '维修人',
         value: '',
-        element: 'input',
+        element: ELEMENT.SELECT,
+        options: [],
+        componentProps: {
+          api: (params) => {
+            console.log(params)
+            return Promise.resolve([
+              { label: '维修人1', value: '1' },
+              { label: '维修人2', value: '2' },
+            ])
+          },
+          params: '',
+        },
         attrs: { type: 'number' },
         rules: [{ required: true }],
       },

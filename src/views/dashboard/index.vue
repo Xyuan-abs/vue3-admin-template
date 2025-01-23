@@ -1,9 +1,5 @@
 <script setup>
-import { getUserInfo } from '@/api/user.js'
-
-onMounted(() => {
-  getUserInfo()
-})
+onMounted(() => {})
 </script>
 
 <script>

@@ -23,7 +23,6 @@ const emit = defineEmits(['save'])
  * 打开弹窗时
  */
 onDialogOpen((rowData, dialogType) => {
-  console.log('rowData ', rowData)
   if ([DIALOG_TYPE.EDIT, DIALOG_TYPE.DETAIL].includes(dialogType)) {
     nextTick(() => setFormValue(rowData))
   }

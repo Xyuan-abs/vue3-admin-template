@@ -1,24 +1,19 @@
-export default function () {
-  const elements = {
-    slot: 'slot',
-    text: 'text',
-    input: 'input',
-    password: 'password',
-    select: 'select',
-    cascader: 'cascader',
-    'tree-select': 'tree-select',
-    'date-picker': 'date-picker',
-    'number-with-unit': 'number-with-unit',
-    checkbox: 'checkbox',
-    radio: 'radio',
-    'file-list': 'file-list',
-    switch: 'switch',
-    'icon-select': 'icon-select',
-    city: 'city',
-    rate: 'rate',
-  }
-
-  return {
-    elements,
-  }
+export const ELEMENT = {
+  SLOT: 'slot',
+  TEXT: 'text',
+  INPUT: 'input',
+  PASSWORD: 'password',
+  SELECT: 'select',
+  CASCADER: 'cascader',
+  TREE_SELECT: 'tree-select',
+  DATE_PICKER: 'date-picker',
+  NUMBER_WITH_UNIT: 'number-with-unit',
+  CHECKBOX: 'checkbox',
+  RADIO: 'radio',
+  FILE_LIST: 'file-list',
+  SWITCH: 'switch',
+  ICON_SELECT: 'icon-select',
+  CITY: 'city',
+  RATE: 'rate',
+  SINGLE_IMG_UPLOAD: 'single-img-upload',
 }
