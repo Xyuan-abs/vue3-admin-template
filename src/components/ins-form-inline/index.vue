@@ -63,7 +63,7 @@ watch(
       })
     }, {})
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )
 
 // 更新v-model
@@ -80,7 +80,7 @@ const updateValue = () => {
             Object.assign({}, p, {
               [c]: value[i],
             }),
-          {}
+          {},
         )
       } else {
         data = {
@@ -91,8 +91,6 @@ const updateValue = () => {
 
     return Object.assign({}, prev, data)
   }, {})
-
-  console.log('result', result)
 
   emit('update:searchParams', result)
 }
@@ -106,7 +104,7 @@ const submit = () => {
 // 重置
 const resetForm = () => {
   dynamicFormRef.value.resetFields()
-  updateValue()
+  submit()
 }
 
 // 是否折叠
