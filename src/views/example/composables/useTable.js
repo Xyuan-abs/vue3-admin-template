@@ -14,7 +14,7 @@ const mockFetch = () => {
           companyId: '1',
           city: '地址',
           principal: '网点负责人',
-          phone: '网点负责人电话',
+          phone: '18712345678',
           serviceScopeTextList: ['服务范围1', '服务范围2'],
           number: 10,
           person: '1',

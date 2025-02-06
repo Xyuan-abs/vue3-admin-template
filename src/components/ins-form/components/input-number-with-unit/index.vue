@@ -3,7 +3,6 @@
  -->
 <script setup>
 import { toRefs } from 'vue'
-import { useVModel } from '@vueuse/core'
 
 import useSetAttrs from './composables/useSetAttrs'
 import useSetRules from './composables/useSetRules'
@@ -23,6 +22,15 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['update:modelValue', 'change'])
+const modelValueVM = ref([])
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    modelValueVM.value = [...newVal]
+  },
+  { immediate: true, deep: true },
+)
 
 // 单位下拉选项
 const { options } = toRefs(props.formItem)
@@ -33,11 +41,10 @@ const { $inputAttrs, $unitAttrs } = useSetAttrs(props.formItem)
 /* rules */
 const { inputRules, unitRules } = useSetRules(props.formItem)
 
-/* 值的双向绑定 */
-const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
-
 /* 统一change事件 */
 const handleChange = () => {
+  emit('update:modelValue', modelValueVM.value)
+
   emit('change')
 }
 </script>
@@ -51,7 +58,7 @@ const handleChange = () => {
       :rules="inputRules"
     >
       <el-input-number
-        v-model:model-value="modelValue[0]"
+        v-model:model-value="modelValueVM[0]"
         class="hidden-crease"
         v-bind="$inputAttrs"
         @change="handleChange"
@@ -64,7 +71,7 @@ const handleChange = () => {
       :prop="'form[' + index + '].value[1]'"
       :rules="unitRules"
     >
-      <el-select v-model="modelValue[1]" v-bind="$unitAttrs" @change="handleChange">
+      <el-select v-model="modelValueVM[1]" v-bind="$unitAttrs" @change="handleChange">
         <el-option
           v-for="option in options"
           :key="option.value"
@@ -120,6 +127,10 @@ const handleChange = () => {
   .number-with-unit-input,
   .number-with-unit-select {
     margin-bottom: 0;
+  }
+
+  .el-form-item {
+    margin-bottom: 0 !important;
   }
 }
 </style>

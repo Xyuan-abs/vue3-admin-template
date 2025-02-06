@@ -16,7 +16,7 @@ export default function (formItem) {
     const attrs = formItem.attrs?.[index] ?? {}
     const rules = formItem.attrs?.rules?.[index] ?? []
 
-    if (formItem.required) {
+    if (formItem.required || formItem.rules?.find((d) => d.required)) {
       rules.push({
         required: true,
         message: `${index ? '请选择' : '请输入'}${attrs.label || ''}`,

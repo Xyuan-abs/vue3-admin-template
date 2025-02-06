@@ -1,3 +1,5 @@
+import { ELEMENT } from './useElement'
+
 /**
  * 格式化 required rules
  * @returns
@@ -8,10 +10,13 @@ export default function () {
 
     // 隐藏当前 formItem 的 required ,由 子表单项 展示 required
     const hindRequiredMessageMap = {
-      'number-with-unit': 1,
+      [ELEMENT.NUMBER_WITH_UNIT]: 1,
     }
 
-    if (hindRequiredMessageMap[formItem.element] && formItem.required) {
+    if (
+      hindRequiredMessageMap[formItem.element] &&
+      (formItem.required || formItem.rules?.some((d) => d.required))
+    ) {
       rules = [{ required: true, message: '', trigger: 'change' }]
     } else if (rules) {
       const requiredRule = rules.find((d) => d.required)
@@ -20,9 +25,20 @@ export default function () {
       if (requiredRule && !requiredRule.message) {
         // 不同类型 表单项对应不同的默认提示语
         const elementTypeMap = [
-          ['input', 'inputNumber'],
-          ['select', 'radio', 'checkbox', 'date-picker', 'city', 'rate'],
-          ['upload'],
+          [ELEMENT.INPUT, 'inputNumber'],
+          [
+            ELEMENT.SELECT,
+            ELEMENT.RADIO,
+            ELEMENT.CASCADER,
+            ELEMENT.TREE_SELECT,
+            ELEMENT.DATE_PICKER,
+            ELEMENT.CHECKBOX,
+            ELEMENT.RATE,
+            ELEMENT.SWITCH,
+            ELEMENT.ICON_SELECT,
+            ELEMENT.CITY,
+          ],
+          [ELEMENT.FILE_LIST, ELEMENT.SINGLE_IMG_UPLOAD],
         ]
         const messageMap = {
           '-1': `${formItem.label}不能为空`,

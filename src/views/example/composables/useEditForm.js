@@ -91,7 +91,7 @@ export default function (row, dialogType) {
           { label: '个', value: '1' },
           { label: '箱', value: '2' },
         ],
-        attrs: { type: 'number' },
+        attrs: [{ max: 100, min: 0 }],
         rules: [{ required: true }],
       },
     ],
