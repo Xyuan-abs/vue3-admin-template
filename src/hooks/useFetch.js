@@ -17,7 +17,7 @@ export default function (
     customErrorMsg = '',
     onSuccess,
     onError,
-  } = {}
+  } = {},
 ) {
   const $baseMessage = inject('$baseMessage')
 

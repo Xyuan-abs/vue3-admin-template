@@ -29,8 +29,8 @@ const change = () => {
 <template>
   <div class="ins-pager">
     <el-pagination
-      v-model:currentPage="pagerParamsVM.page"
-      v-model:pageSize="pagerParamsVM.size"
+      v-model:current-page="pagerParamsVM.page"
+      v-model:page-size="pagerParamsVM.size"
       v-bind="$attrs"
       :total="pagerParamsVM.total"
       @current-change="handleCurrentChange"

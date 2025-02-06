@@ -15,7 +15,7 @@ export function formatJson(jsonStr) {
 export function isJSON(str) {
   try {
     const obj = JSON.parse(str)
-    if (typeof obj == 'object' && obj) {
+    if (typeof obj === 'object' && obj) {
       return obj
     } else {
       return false

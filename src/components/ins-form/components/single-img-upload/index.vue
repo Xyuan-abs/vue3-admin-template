@@ -55,7 +55,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 )
 
 /**

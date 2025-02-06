@@ -43,7 +43,12 @@ export default function (formItem) {
   function formatterOptions(res) {
     if (!res) return []
 
-    const { resultField = 'data', labelFmt, labelKey = 'label', valueKey = 'value' } = componentProps
+    const {
+      resultField = 'data',
+      labelFmt,
+      labelKey = 'label',
+      valueKey = 'value',
+    } = componentProps
 
     let list = []
     if (Array.isArray(res)) {

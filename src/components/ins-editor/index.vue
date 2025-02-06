@@ -49,7 +49,7 @@ watch(
   (newValue) => {
     html.value = newValue
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 /** 只读 */
@@ -64,7 +64,7 @@ watch(
       editorRef.value.enable()
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>
 

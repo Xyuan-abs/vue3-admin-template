@@ -188,7 +188,7 @@ defineExpose({
           <!-- select -->
           <ins-select
             v-else-if="formItem.element === ELEMENT.SELECT"
-            v-model:modelValue="formItem.value"
+            v-model:model-value="formItem.value"
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
@@ -198,7 +198,7 @@ defineExpose({
           <!-- cascader -->
           <ins-cascader
             v-else-if="formItem.element === ELEMENT.CASCADER"
-            v-model:modelValue="formItem.value"
+            v-model:model-value="formItem.value"
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
@@ -208,7 +208,7 @@ defineExpose({
           <!-- tree-select -->
           <ins-tree-select
             v-else-if="formItem.element === ELEMENT.TREE_SELECT"
-            v-model:modelValue="formItem.value"
+            v-model:model-value="formItem.value"
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
@@ -231,7 +231,7 @@ defineExpose({
           <!-- 带单位的input-number -->
           <input-number-with-unit
             v-else-if="formItem.element === ELEMENT.NUMBER_WITH_UNIT"
-            v-model:modelValue="formItem.value"
+            v-model:model-value="formItem.value"
             :form-item="formItem"
             :index="index"
             @change="handleChange(formItem, index)"
@@ -240,7 +240,7 @@ defineExpose({
           <!-- checkbox -->
           <ins-checkbox
             v-else-if="formItem.element === ELEMENT.CHECKBOX"
-            v-model:modelValue="formItem.value"
+            v-model:model-value="formItem.value"
             :form-item="formItem"
             v-bind="formItem.attrs"
             @change="handleChange(formItem, index)"
@@ -249,7 +249,7 @@ defineExpose({
           <!-- radio -->
           <ins-radio
             v-else-if="formItem.element === ELEMENT.RADIO"
-            v-model:modelValue="formItem.value"
+            v-model:model-value="formItem.value"
             :form-item="formItem"
             v-bind="formItem.attrs"
             @change="handleChange(formItem, index)"
@@ -258,7 +258,7 @@ defineExpose({
           <!-- fileList -->
           <template v-else-if="formItem.element === ELEMENT.FILE_LIST">
             <ins-file-list
-              v-model:modelValue="formItem.value"
+              v-model:model-value="formItem.value"
               :form-item="formItem"
               v-bind="formItem.attrs"
               @change="handleChange(formItem, index)"

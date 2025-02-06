@@ -30,7 +30,7 @@ service.interceptors.request.use(
     // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
-  }
+  },
 )
 
 // response interceptor
@@ -71,14 +71,14 @@ service.interceptors.response.use(
   },
   (error) => {
     console.log('err' + error) // for debug
-    let msg = error.response?.data?.message || error.response?.data?.msg || ''
+    const msg = error.response?.data?.message || error.response?.data?.msg || ''
 
     gp.$baseMessage({
       message: msg && msg.length < 50 ? msg : error.message,
       type: 'error',
     })
     return Promise.reject(error)
-  }
+  },
 )
 
 export default service

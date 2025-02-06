@@ -41,7 +41,7 @@ export default function (props) {
     (newValue) => {
       tableData.value = props.isDetail ? [...(newValue ?? [])] : [{}, ...(newValue ?? [])]
     },
-    { immediate: true }
+    { immediate: true },
   )
 
   /**

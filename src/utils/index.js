@@ -96,7 +96,7 @@ export function param2Obj(url) {
         .replace(/&/g, '","')
         .replace(/=/g, '":"')
         .replace(/\+/g, ' ') +
-      '"}'
+      '"}',
   )
 }
 
@@ -104,7 +104,7 @@ export function param2Obj(url) {
  * 版本号
  */
 export function versionNum() {
-  let d = new Date()
+  const d = new Date()
   return `${d.getFullYear()}${d.getMonth() < 9 ? '0' : ''}${d.getMonth() + 1}${
     d.getDate() < 10 ? '0' : ''
   }${d.getDate()}${d.getHours() < 10 ? '0' : ''}${d.getHours()}${

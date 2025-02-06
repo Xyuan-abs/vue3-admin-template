@@ -32,7 +32,7 @@ export function getDictionaryByCode(code) {
             res?.data?.map((d) => ({
               label: d.value,
               value: d.code,
-            })) ?? []
+            })) ?? [],
           )
         } else {
           resolve([])

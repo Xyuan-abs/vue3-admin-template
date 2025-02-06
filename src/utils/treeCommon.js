@@ -147,9 +147,9 @@ export function getFullValueByTreeId(list, id) {
   let result = []
 
   function getFullValue(id) {
-    let node = list.find((d) => d.id === id)
+    const node = list.find((d) => d.id === id)
     if (node?.pid) {
-      let res = getFullValue(node.pid)
+      const res = getFullValue(node.pid)
       return [...res].concat(id)
     } else {
       return [id]

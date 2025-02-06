@@ -105,7 +105,7 @@ export default function (props) {
         hidden: computed(() => {
           const repairType = dynamicForm.form.find((d) => d.name === 'repairType')
           return ![REPAIR_MODE.RETURN_FOR_REPAIR, REPAIR_MODE.ON_SITE_MAINTENANCE].includes(
-            repairType.value
+            repairType.value,
           )
         }),
       },

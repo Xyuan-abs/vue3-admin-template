@@ -31,7 +31,7 @@ export function clipboard(text) {
         const msg = successful ? 'successful' : 'failed'
         console.log(`Copy command was : ${msg}`)
       } catch (err) {
-        console.log('Oops , unable to copy!')
+        console.log('Oops , unable to copy!' + err)
       }
 
       resolve(successful)

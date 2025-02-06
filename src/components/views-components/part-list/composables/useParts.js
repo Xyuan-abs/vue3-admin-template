@@ -21,7 +21,7 @@ export default function (props, keys = []) {
     onSuccess: (res) => {
       partsOptions.value =
         res.data.map((d) =>
-          Object.assign({}, d, { label: d.materialName, value: d.materialName })
+          Object.assign({}, d, { label: d.materialName, value: d.materialName }),
         ) ?? []
     },
   })

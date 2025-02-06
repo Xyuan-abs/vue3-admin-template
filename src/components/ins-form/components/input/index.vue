@@ -36,7 +36,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 )
 
 const handleChange = debounce(() => {

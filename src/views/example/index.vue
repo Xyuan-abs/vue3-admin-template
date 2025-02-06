@@ -33,7 +33,7 @@ onMounted(() => {
     <!-- 查询表单 -->
     <ins-panel class="direction-row">
       <ins-form-inline
-        v-model:searchParams="searchParams"
+        v-model:search-params="searchParams"
         class="direction-row"
         :dynamic-form="dynamicForm"
         @submit="searchData"

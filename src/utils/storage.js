@@ -12,7 +12,7 @@ export const setSessionStorage = (key, val) => {
  * @param {*} key
  */
 export const getSessionStorage = (key) => {
-  let res = window.sessionStorage.getItem(key)
+  const res = window.sessionStorage.getItem(key)
   return JSON.parse(res)
 }
 
@@ -30,6 +30,6 @@ export const setLocalStorage = (key, val) => {
  * @param {*} key
  */
 export const getLocalStorage = (key) => {
-  let res = window.localStorage.getItem(key)
+  const res = window.localStorage.getItem(key)
   return res ? JSON.parse(res) : ''
 }

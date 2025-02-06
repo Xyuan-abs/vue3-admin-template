@@ -22,7 +22,7 @@ export default function (form, _InsFormRef, row, addApi, editApi = addApi, idKey
     {
       name: '保存',
       showSuccessMsg: true,
-    }
+    },
   )
 
   // 设置默认值（编辑）

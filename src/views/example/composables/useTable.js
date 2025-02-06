@@ -21,7 +21,7 @@ const mockFetch = () => {
         },
       ],
       total: 0,
-    }
+    },
   )
 }
 

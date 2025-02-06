@@ -17,7 +17,7 @@ export function conversion(limit) {
   var sizestr = size + ''
   var len = sizestr.indexOf('.')
   var dec = sizestr.substr(len + 1, 2)
-  if (dec == '00') {
+  if (dec === '00') {
     //当小数点后为00时 去掉小数部分
     return sizestr.substring(0, len) + sizestr.substr(len + 3, 2)
   }

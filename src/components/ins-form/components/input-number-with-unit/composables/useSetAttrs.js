@@ -15,7 +15,9 @@ export default function (formItem) {
     clearable: false,
   }
 
-  const $inputAttrs = computed(() => Object.assign({}, inputDefaultAttrs, formItem.attrs?.[0] || {}))
+  const $inputAttrs = computed(() =>
+    Object.assign({}, inputDefaultAttrs, formItem.attrs?.[0] || {}),
+  )
   const $unitAttrs = computed(() => Object.assign({}, unitDefaultAttrs, formItem.attrs?.[1] || {}))
 
   return {

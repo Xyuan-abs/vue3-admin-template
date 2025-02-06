@@ -30,7 +30,9 @@ export default function () {
           1: `请选择${formItem.label}`,
           2: `请上传${formItem.label}`,
         }
-        const elementType = elementTypeMap.findIndex((types) => types.some((d) => d === formItem.element))
+        const elementType = elementTypeMap.findIndex((types) =>
+          types.some((d) => d === formItem.element),
+        )
 
         const message = messageMap[elementType]
         requiredRule.message = message

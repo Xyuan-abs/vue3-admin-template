@@ -28,7 +28,7 @@ export const useUserStore = defineStore('user', {
       const { account, password } = params
       // const res = await login({ account, password }).catch((e) => console.error(e))
       const res = await mock({ account, password }, { data: 'token' }).catch((e) =>
-        console.error(e)
+        console.error(e),
       )
 
       if (res?.success) {

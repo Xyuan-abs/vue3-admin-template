@@ -14,7 +14,7 @@ const { row, title, dialogType, dialogVisible, onDialogOpen, handleOpenDialog, h
   useDialog('网点')
 const { InsFormRef, dynamicForm, isSaving, setFormValue, resetForm, submit } = useEditForm(
   row,
-  dialogType
+  dialogType,
 )
 
 const emit = defineEmits(['save'])

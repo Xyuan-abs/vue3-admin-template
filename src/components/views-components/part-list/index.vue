@@ -105,7 +105,7 @@ function updateModelValue() {
           v-if="index === 0"
           text
           type="primary"
-          @click="handleAdd().then(updateModelValue), handleCachePartsOptionsByValue(row['配件'])"
+          @click="(handleAdd().then(updateModelValue), handleCachePartsOptionsByValue(row['配件']))"
         >
           添加
         </el-button>
@@ -114,9 +114,9 @@ function updateModelValue() {
           text
           type="primary"
           @click="
-            handleDelete(index),
-              updateModelValue(),
-              handleRemoveCachePartsOptionsByValue(row['配件'])
+            (handleDelete(index),
+            updateModelValue(),
+            handleRemoveCachePartsOptionsByValue(row['配件']))
           "
         >
           删除

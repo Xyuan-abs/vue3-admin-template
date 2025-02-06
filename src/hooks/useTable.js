@@ -8,7 +8,7 @@ import { isRef } from 'vue'
 export default function (
   fetchDataApi,
   searchParams = {},
-  { hasPage = true, page = 1, size = 10 } = {}
+  { hasPage = true, page = 1, size = 10 } = {},
 ) {
   /** 分页 */
   const pagerParams = reactive({

@@ -126,7 +126,10 @@ $font-size: 16px;
   padding: 15px;
   background-color: #fbfbfb;
   border-radius: 10px;
-  box-shadow: 0 1px 2px -2px #00000029, 0 3px 6px #0000001f, 0 5px 12px 4px #00000017;
+  box-shadow:
+    0 1px 2px -2px #00000029,
+    0 3px 6px #0000001f,
+    0 5px 12px 4px #00000017;
   transform: translate(-50%, -50%);
   .cover {
     padding: 32px 20px;

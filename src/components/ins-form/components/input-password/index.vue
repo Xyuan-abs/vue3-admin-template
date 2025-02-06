@@ -2,33 +2,33 @@
   名称：带单位的input-number
  -->
 <script setup>
-  import { useVModel } from '@vueuse/core'
+import { useVModel } from '@vueuse/core'
 
-  const props = defineProps({
-    formItem: {
-      type: Object,
-      default: () => ({}),
-    },
-    index: {
-      type: Number,
-      default: 0,
-    },
-    modelValue: {
-      type: String,
-      default: null,
-    },
-  })
+const props = defineProps({
+  formItem: {
+    type: Object,
+    default: () => ({}),
+  },
+  index: {
+    type: Number,
+    default: 0,
+  },
+  modelValue: {
+    type: String,
+    default: null,
+  },
+})
 
-  const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'change'])
 
-  /* 值的双向绑定 */
-  const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
+/* 值的双向绑定 */
+const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
 
-  const handleChange = () => {
-    emit('change')
-  }
+const handleChange = () => {
+  emit('change')
+}
 
-  onMounted(() => {})
+onMounted(() => {})
 </script>
 
 <template>
@@ -45,7 +45,7 @@
 </template>
 
 <style lang="scss">
-  .input-password {
-    width: 100%;
-  }
+.input-password {
+  width: 100%;
+}
 </style>

@@ -46,7 +46,7 @@ export default function (dynamicForm, clearValidate) {
         },
         {
           immediate: true,
-        }
+        },
       )
     }
   })

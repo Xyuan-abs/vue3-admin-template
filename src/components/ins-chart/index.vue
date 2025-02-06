@@ -44,7 +44,7 @@ watch(
     } else {
       myChart.hideLoading()
     }
-  }
+  },
 )
 
 onMounted(() => {

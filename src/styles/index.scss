@@ -1,7 +1,6 @@
-@import './transition.scss';
-@import './ins.scss';
-@import './theme.scss';
-
+@use './transition.scss';
+@use './ins.scss';
+@use './theme.scss';
 
 html {
   box-sizing: border-box;
@@ -13,10 +12,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: PingFangSC-Regular, PingFang SC, Helvetica Neue, Helvetica, Hiragino Sans GB,
-    Microsoft YaHei, Arial, sans-serif;
+  font-family:
+    PingFangSC-Regular,
+    PingFang SC,
+    Helvetica Neue,
+    Helvetica,
+    Hiragino Sans GB,
+    Microsoft YaHei,
+    Arial,
+    sans-serif;
 }
-
 
 #app {
   min-height: 100%;
@@ -64,4 +69,3 @@ div:focus {
 ul li {
   list-style-type: none;
 }
-
