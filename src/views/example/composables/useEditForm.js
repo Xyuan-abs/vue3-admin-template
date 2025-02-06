@@ -47,7 +47,7 @@ export default function (row, dialogType) {
             value: () => '',
             // hidden: (value) => value === '2',
             required: (value) => value !== '1',
-            // disabled: (value) => value === '1',
+            disabled: (value) => value === '1',
             // isShow: (value) => value === '1',
             custom: (value) => ({ value: '' }),
             params: (value) => value,
@@ -70,7 +70,7 @@ export default function (row, dialogType) {
         options: [],
         componentProps: {
           api: (params) => {
-            console.log(params)
+            console.log('params', params)
             return Promise.resolve([
               { label: '维修人1', value: '1' },
               { label: '维修人2', value: '2' },
@@ -78,7 +78,7 @@ export default function (row, dialogType) {
           },
           params: '',
         },
-        attrs: { type: 'number' },
+        attrs: { type: 'number', disabled: false },
         rules: [{ required: true }],
       },
     ],

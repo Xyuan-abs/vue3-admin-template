@@ -153,6 +153,8 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@use 'sass:color';
+
 .ins-table {
   width: 100%;
   font-family: inherit;
@@ -194,7 +196,7 @@ defineExpose({
     &.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
       // $color: var(--el-color-primary-light-9);
       $color: #fff;
-      background: fade-in($color, 0.5);
+      background: color.adjust($color, $alpha: 0.5);
     }
   }
 
