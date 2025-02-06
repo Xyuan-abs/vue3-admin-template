@@ -22,7 +22,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change'])
 
 /* 值的双向绑定 */
-const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
+const modelValueVM = useVModel(props, 'modelValue', emit) // 值的双向绑定
 
 const handleChange = () => {
   emit('change')
@@ -34,7 +34,7 @@ onMounted(() => {})
 <template>
   <div class="input-password">
     <el-input
-      v-model="modelValue"
+      v-model="modelValueVM"
       v-bind="$attrs"
       autocomplete="new-password"
       :show-password="true"

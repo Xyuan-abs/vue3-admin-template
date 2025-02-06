@@ -25,7 +25,7 @@ useFetchData(props.formItem)
 const emit = defineEmits(['update:modelValue', 'change'])
 
 /* 值的双向绑定 */
-const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
+const modelValueVM = useVModel(props, 'modelValue', emit) // 值的双向绑定
 
 function handleChange() {
   emit('change')
@@ -33,7 +33,7 @@ function handleChange() {
 </script>
 
 <template>
-  <el-radio-group v-model="modelValue" class="ins-radio" v-bind="$attrs" @change="handleChange">
+  <el-radio-group v-model="modelValueVM" class="ins-radio" v-bind="$attrs" @change="handleChange">
     <el-radio v-for="option in formItem.options" :key="option.value" :value="option.value">{{
       option.label
     }}</el-radio>

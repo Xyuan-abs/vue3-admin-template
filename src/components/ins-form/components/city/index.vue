@@ -24,7 +24,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change'])
 
 /* 值的双向绑定 */
-const value = useVModel(props, 'modelValue', emit) // 值的双向绑定
+const modelValueVM = useVModel(props, 'modelValue', emit) // 值的双向绑定
 
 function handleChange() {
   emit('change')
@@ -55,7 +55,7 @@ const cascaderProps = {
 
 <template>
   <el-cascader
-    v-model="value"
+    v-model="modelValueVM"
     class="ins-city"
     clearable
     :props="cascaderProps"

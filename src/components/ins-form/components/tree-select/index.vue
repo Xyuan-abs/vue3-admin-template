@@ -28,7 +28,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change'])
 
 /* 值的双向绑定 */
-const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
+const modelValueVM = useVModel(props, 'modelValue', emit) // 值的双向绑定
 
 function handleChange() {
   emit('change')
@@ -37,7 +37,7 @@ function handleChange() {
 
 <template>
   <el-tree-select
-    v-model="modelValue"
+    v-model="modelValueVM"
     class="ins-tree-select"
     clearable
     v-bind="$attrs"
