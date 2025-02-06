@@ -31,6 +31,7 @@ export default function (
   let timer = null
 
   function executeFetch(_params) {
+    console.log('params ', _params)
     // 延迟loading
     timer = setTimeout(() => {
       isFetching.value = true
@@ -42,6 +43,7 @@ export default function (
         .catch((e) => ({ success: false, msg: e.message }))
         .then((res) => {
           resolve(res)
+          console.log('res ', res)
 
           isFetching.value = false
           isSuccess.value = !!res.success

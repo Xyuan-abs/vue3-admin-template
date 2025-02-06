@@ -82,6 +82,7 @@ const handleChange = () => {
   align-items: center;
   justify-content: space-around;
   font-family: inherit;
+  width: 100%;
 
   .el-input-number {
     width: 100%;

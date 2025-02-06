@@ -23,7 +23,6 @@ export default function (
   /** 获取表格数据 */
   const { isFetching, executeFetch } = useFetch(fetchDataApi, {
     onSuccess: (res) => {
-      console.log('res ', res)
       if (hasPage) {
         tableData.value = res.data?.list ?? []
         pagerParams.total = res.data?.total ?? 0
@@ -51,8 +50,6 @@ export default function (
       ...(hasPage ? { page, pageSize: size } : {}),
       ...(isRef(searchParams) ? searchParams.value : searchParams),
     }
-
-    console.log('params ', params)
 
     return executeFetch(params)
   }

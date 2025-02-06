@@ -46,7 +46,7 @@ export default function (row, dialogType) {
           person: {
             value: () => '',
             // hidden: (value) => value === '2',
-            required: (value) => value !== '1',
+            required: (value) => value === '2',
             disabled: (value) => value === '1',
             // isShow: (value) => value === '1',
             custom: (value) => ({ value: '' }),
@@ -60,6 +60,7 @@ export default function (row, dialogType) {
         label: '负责人电话',
         value: '',
         element: ELEMENT.INPUT,
+        attrs: { type: 'number' },
         rules: [{ required: true }],
       },
       {
@@ -70,7 +71,6 @@ export default function (row, dialogType) {
         options: [],
         componentProps: {
           api: (params) => {
-            console.log('params', params)
             return Promise.resolve([
               { label: '维修人1', value: '1' },
               { label: '维修人2', value: '2' },
@@ -79,6 +79,19 @@ export default function (row, dialogType) {
           params: '',
         },
         attrs: { type: 'number', disabled: false },
+        rules: [{ required: true }],
+      },
+      {
+        name: 'count',
+        label: '数量',
+        value: [],
+        valueMap: ['count', 'unit'],
+        element: ELEMENT.NUMBER_WITH_UNIT,
+        options: [
+          { label: '个', value: '1' },
+          { label: '箱', value: '2' },
+        ],
+        attrs: { type: 'number' },
         rules: [{ required: true }],
       },
     ],
