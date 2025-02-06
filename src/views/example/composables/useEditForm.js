@@ -5,11 +5,17 @@ import { DIALOG_TYPE } from '@/hooks/useDialog'
 import { ELEMENT } from '@/components/ins-form/composables/useElement'
 
 const mockAdd = (...arg) => {
-  return mock(...arg)
+  return mock(
+    ...arg,
+    'https://fastly.picsum.photos/id/20/200/300.jpg?hmac=DFzxrn8j8N0vtdAloI4hYTGWP-nNrDqMbVcWjF2BLwA',
+  )
 }
 
 const mockEdit = (...arg) => {
-  return mock(...arg)
+  return mock(
+    ...arg,
+    'https://fastly.picsum.photos/id/20/200/300.jpg?hmac=DFzxrn8j8N0vtdAloI4hYTGWP-nNrDqMbVcWjF2BLwA',
+  )
 }
 
 /**

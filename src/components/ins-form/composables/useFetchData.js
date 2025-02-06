@@ -21,9 +21,11 @@ export default function (formItem) {
   /* 监听参数变化 获取表单项数据 */
   if (componentProps) {
     const immediate = !!componentProps.immediate
-    !componentProps.params && (componentProps.params = {})
-
-    watch(() => componentProps.params, handleFetchOptions, { deep: true, immediate })
+    if (componentProps.params === undefined && immediate) {
+      handleFetchOptions()
+    } else {
+      watch(() => componentProps.params, handleFetchOptions, { deep: true, immediate })
+    }
   }
 
   /* 获取options */

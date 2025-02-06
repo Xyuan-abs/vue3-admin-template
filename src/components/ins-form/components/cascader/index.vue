@@ -38,7 +38,7 @@ const { loading } = useFetchData(props.formItem)
 const emit = defineEmits(['update:modelValue', 'change'])
 
 /* 值的双向绑定 */
-const modelValue = useVModel(props, 'modelValue', emit) // 值的双向绑定
+const modelValueVM = useVModel(props, 'modelValue', emit) // 值的双向绑定
 
 function handleChange() {
   emit('change')
@@ -47,7 +47,7 @@ function handleChange() {
 
 <template>
   <el-cascader
-    v-model="modelValue"
+    v-model="modelValueVM"
     class="ins-cascader"
     clearable
     v-bind="$attrs"

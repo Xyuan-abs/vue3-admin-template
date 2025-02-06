@@ -41,7 +41,11 @@ export default function (api) {
     // 提交
     const res = await executeSave(params)
 
-    return res?.success || false
+    if (res?.success) {
+      return res?.data || true
+    } else {
+      return false
+    }
   }
 
   return {

@@ -10,6 +10,8 @@ import { DIALOG_TYPE } from '@/hooks/useDialog'
 
 import useEditForm from './composables/useEditForm'
 
+import { downloadFile } from '@/utils/index'
+
 const { row, title, dialogType, dialogVisible, onDialogOpen, handleOpenDialog, handleCloseDialog } =
   useDialog('网点')
 const { InsFormRef, dynamicForm, isSaving, setFormValue, resetForm, submit } = useEditForm(
@@ -39,8 +41,10 @@ function onClosed() {
  * 保存
  */
 async function save() {
-  const success = await submit()
-  if (success) {
+  const data = await submit()
+  if (data) {
+    downloadFile(data)
+
     handleCloseDialog()
     emit('save')
   }

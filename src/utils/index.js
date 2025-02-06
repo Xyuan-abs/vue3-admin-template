@@ -208,3 +208,23 @@ export function getLabelByOptionsValue(value, options) {
   }
   return list.map((v) => options.find((d) => d?.value === v)?.label ?? v).join('、')
 }
+
+/**
+ * 根据地址下载文件
+ * @param url
+ */
+export function downloadFile(url, filename) {
+  console.log('url ', url)
+  const link = document.createElement('a')
+  link.target = '_blank'
+  link.href = url
+  link.style.display = 'none'
+  link.download = filename
+
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  if (url.startsWith('blob')) {
+    window.URL.revokeObjectURL(url)
+  }
+}

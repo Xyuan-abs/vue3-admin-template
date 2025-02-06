@@ -150,7 +150,7 @@ export default function (dynamicForm, clearValidate) {
       return
     }
 
-    if (!linkageFormItem.componentProps.params === undefined) {
+    if (linkageFormItem.componentProps.params === undefined) {
       console.error(`表单项 ${linkageFormItem.name}未配置 componentProps.params 属性`)
       return
     }

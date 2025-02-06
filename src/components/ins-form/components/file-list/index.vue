@@ -40,7 +40,7 @@ watch(
   (newValue) => {
     /* 数量不一致时（一般在初始化）更新 fileList，避免 直接对 fileList.value 赋值触发动画 */
     if (newValue !== fileList.value.length) {
-      const { baseUrl = process.env.VUE_APP_BASE_URL } = props.formItem.componentProps ?? {}
+      const { baseUrl = import.meta.env.VUE_APP_BASE_URL } = props.formItem.componentProps ?? {}
       fileList.value = props.modelValue.map((d) => ({
         name: d,
         url:
