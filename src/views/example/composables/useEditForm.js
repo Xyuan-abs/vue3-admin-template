@@ -107,6 +107,38 @@ export default function (row, dialogType) {
         attrs: [{ max: 100, min: 0 }],
         rules: [{ required: true }],
       },
+      {
+        name: 'address',
+        label: '地址',
+        value: '',
+        element: ELEMENT.TREE_SELECT,
+        options: [],
+        componentProps: {
+          api: (params) => {
+            return Promise.resolve([
+              {
+                label: '福建省',
+                value: 'fjs',
+                children1: [
+                  {
+                    label: '福州市',
+                    value: 'fz',
+                    children1: [
+                      { label: '鼓楼区', value: 'gl' },
+                      { label: '台江区', value: 'tj' },
+                    ],
+                  },
+                ],
+              },
+            ])
+          },
+          params: '',
+          immediate: true,
+          childrenKey: 'children1',
+        },
+        attrs: { type: 'number', disabled: false },
+        rules: [{ required: true }],
+      },
     ],
   })
 

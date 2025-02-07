@@ -6,7 +6,7 @@
  * componentProps:{
  *  api:()=>{}, //上传接口
  *  resultFields:'data.url', // 上传后的图片地址对应的key ,多个层级以 . 拼接
- *  baseUrl:process.env.VUE_APP_BASE_URL,图片地址前缀
+ *  baseUrl:import.meta.env.VUE_APP_BASE_URL,图片地址前缀
  * }
  */
 

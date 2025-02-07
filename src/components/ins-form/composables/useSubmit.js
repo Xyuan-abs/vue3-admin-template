@@ -83,19 +83,6 @@ export default function (dynamicFormRef, dynamicForm, emit) {
   // 重置整个表单
   function resetForm() {
     dynamicFormRef.value.resetFields()
-    dynamicForm.form.forEach((formItem) => {
-      if (formItem.element === 'upload') {
-        formItem.attr.fileList = []
-      }
-
-      // if (formItem.isShow !== undefined) {
-      //   formItem.isShow = false
-      // }
-      // if (formItem.hidden !== undefined) {
-      //   formItem.hidden = true
-      // }
-    })
-
     emit('reset')
   }
 

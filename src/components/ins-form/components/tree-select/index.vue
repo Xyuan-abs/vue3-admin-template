@@ -9,6 +9,7 @@
  *
  */
 import { useVModel } from '@vueuse/core'
+import useFetchData from '../../composables/useFetchData'
 
 const props = defineProps({
   formItem: {
@@ -24,6 +25,8 @@ const props = defineProps({
     default: null,
   },
 })
+
+const { loading } = useFetchData(props.formItem)
 
 const emit = defineEmits(['update:modelValue', 'change'])
 

@@ -50,22 +50,29 @@ export default function (formItem) {
       labelFmt,
       labelKey = 'label',
       valueKey = 'value',
+      childrenKey = 'children',
     } = componentProps
 
-    let list = []
+    let options = []
     if (Array.isArray(res)) {
-      list = res
-    }
-    if (Object.prototype.toString.call(res) === '[object Object]') {
-      const keys = resultField.split('.')
-      list = keys.reduce((prev, cur) => prev[cur], res) ?? []
+      options = res
     }
 
-    return list.map((d) => ({
-      ...d,
-      label: labelFmt ? labelFmt(d) : d[labelKey],
-      value: d[valueKey],
-    }))
+    if (Object.prototype.toString.call(res) === '[object Object]') {
+      const keys = resultField.split('.')
+      options = keys.reduce((prev, cur) => prev[cur], res) ?? []
+    }
+
+    function formatter(list) {
+      return list.map((d) => ({
+        ...d,
+        label: labelFmt ? labelFmt(d) : d[labelKey],
+        value: d[valueKey],
+        children: d[childrenKey] ? formatter(d[childrenKey]) : [],
+      }))
+    }
+
+    return formatter(options)
   }
 
   return {

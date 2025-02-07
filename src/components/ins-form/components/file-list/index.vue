@@ -6,7 +6,7 @@
  * componentProps:{
  *  api:()=>{}, //上传接口
  *  resultFields:'data.url', // 上传后的图片地址对应的key ,多个层级以 . 拼接
- *  baseUrl:process.env.VUE_APP_BASE_URL,图片地址前缀
+ *  baseUrl:import.meta.env.VUE_APP_BASE_URL,图片地址前缀
  * }
  */
 
@@ -110,11 +110,13 @@ function onClosePreview() {
  */
 
 function handleDelete(file, fileList) {
-  const { baseUrl = process.env.VUE_APP_BASE_URL } = props.formItem.componentProps ?? {}
-
-  const list = fileList.map((d) => {
-    return d.url.split(baseUrl)[1]
-  })
+  const { baseUrl = import.meta.env.VUE_APP_BASE_URL } = props.formItem.componentProps ?? {}
+  let list = fileList
+  if (baseUrl) {
+    list = fileList.map((d) => {
+      return d.url.split(baseUrl)[1]
+    })
+  }
 
   emit('update:modelValue', list)
 }

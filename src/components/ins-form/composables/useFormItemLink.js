@@ -155,7 +155,10 @@ export default function (dynamicForm, clearValidate) {
       return
     }
 
-    linkageFormItem.componentProps.params = await linkage[prop](newVal)
+    linkageFormItem.componentProps.params = await linkage[prop](
+      newVal,
+      linkageFormItem.componentProps.params,
+    )
   }
 
   /**
