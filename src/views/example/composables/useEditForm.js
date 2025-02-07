@@ -47,7 +47,14 @@ export default function (row, dialogType) {
           { label: '公司3', value: '3' },
         ],
         rules: [{ required: true }],
-        events: {},
+        events: {
+          change: (value) => {
+            console.log('change', value)
+          },
+          blur: (value) => {
+            console.log('blur', value)
+          },
+        },
         linkage: {
           person: {
             value: () => '',

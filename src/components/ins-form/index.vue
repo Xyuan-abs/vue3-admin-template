@@ -103,10 +103,36 @@ const {
   resetFields,
   resetForm,
   clearValidate,
-  handleChange,
 } = useSubmit(dynamicFormRef, props.dynamicForm, emit)
 
 useFormItemLink(props.dynamicForm, clearValidate)
+
+/**
+ * 重写表单事件
+ * @param {*} formItem
+ * @param {*} index
+ */
+function overwriteEvents(formItem, index) {
+  let events = { ...formItem.events }
+
+  // 默认拥有 change 事件
+  if (!events || events.change === void 0) {
+    events = { change: () => {} }
+  }
+
+  Object.keys(events).forEach((key) => {
+    const oldEvent = events[key]
+    events[key] = (...args) => {
+      oldEvent(formItem, index, ...args)
+
+      if (key === 'change') {
+        validateField(`form[${index}].value`)
+        emit('change', formItem, index)
+      }
+    }
+  })
+  return events
+}
 
 // 暴露出去的 属性和方法
 defineExpose({
@@ -173,7 +199,7 @@ defineExpose({
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- password -->
@@ -182,7 +208,7 @@ defineExpose({
             v-model="formItem.value"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- select -->
@@ -192,7 +218,7 @@ defineExpose({
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- cascader -->
@@ -202,7 +228,7 @@ defineExpose({
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- tree-select -->
@@ -212,7 +238,7 @@ defineExpose({
             :form-item="formItem"
             :placeholder="getPlaceholder(formItem)"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- date-picker -->
@@ -225,7 +251,7 @@ defineExpose({
             start-placeholder="起始日期"
             type="date"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- 带单位的input-number -->
@@ -234,7 +260,7 @@ defineExpose({
             v-model:model-value="formItem.value"
             :form-item="formItem"
             :index="index"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- checkbox -->
@@ -243,7 +269,7 @@ defineExpose({
             v-model:model-value="formItem.value"
             :form-item="formItem"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- radio -->
@@ -252,7 +278,7 @@ defineExpose({
             v-model:model-value="formItem.value"
             :form-item="formItem"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- fileList -->
@@ -261,7 +287,7 @@ defineExpose({
               v-model:model-value="formItem.value"
               :form-item="formItem"
               v-bind="formItem.attrs"
-              @change="handleChange(formItem, index)"
+              v-on="overwriteEvents(formItem, index)"
             />
           </template>
 
@@ -271,7 +297,7 @@ defineExpose({
             v-model="formItem.value"
             v-bind="formItem.attrs"
             :form-item="formItem"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- switch -->
@@ -279,7 +305,7 @@ defineExpose({
             v-else-if="formItem.element === ELEMENT.SWITCH"
             v-model="formItem.value"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- city -->
@@ -287,7 +313,7 @@ defineExpose({
             v-else-if="formItem.element === ELEMENT.CITY"
             v-model="formItem.value"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- rate -->
@@ -295,7 +321,7 @@ defineExpose({
             v-else-if="formItem.element === ELEMENT.RATE"
             v-model="formItem.value"
             v-bind="formItem.attrs"
-            @change="handleChange(formItem, index)"
+            v-on="overwriteEvents(formItem, index)"
           />
 
           <!-- 提示 -->

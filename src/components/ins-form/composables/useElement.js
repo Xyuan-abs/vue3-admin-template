@@ -12,7 +12,6 @@ export const ELEMENT = {
   RADIO: 'radio',
   FILE_LIST: 'file-list',
   SWITCH: 'switch',
-  ICON_SELECT: 'icon-select',
   CITY: 'city',
   RATE: 'rate',
   SINGLE_IMG_UPLOAD: 'single-img-upload',

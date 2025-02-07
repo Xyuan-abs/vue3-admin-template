@@ -104,15 +104,6 @@ export default function (dynamicFormRef, dynamicForm, emit) {
     dynamicFormRef.value.validateField(props, callback).catch(() => {})
   }
 
-  // 表单项 change 事件
-  const handleChange = (formItem, index) => {
-    validateField(`form[${index}].value`)
-    if (formItem.events?.change) {
-      formItem.events?.change(formItem, dynamicForm, index)
-    }
-    emit('change', formItem, index)
-  }
-
   return {
     getSaveData,
     validateField,
@@ -122,6 +113,5 @@ export default function (dynamicFormRef, dynamicForm, emit) {
     resetFields,
     resetForm,
     clearValidate,
-    handleChange,
   }
 }
