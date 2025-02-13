@@ -2,7 +2,10 @@ import globals from 'globals'
 import pluginJs from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
-import autoImport from './.eslintrc-auto-import.json' assert { type: 'json' }
+import { readFile } from 'node:fs/promises'
+
+const autoImportFile = new URL('./.eslintrc-auto-import.json', import.meta.url)
+const autoImportGlobals = JSON.parse(await readFile(autoImportFile, 'utf8'))
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -10,11 +13,19 @@ export default [
     ignores: ['node_modules', 'dist', 'public'],
     files: ['**/*.{js,mjs,cjs,vue}'],
   },
-  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+  {
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+  },
   pluginJs.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
   {
-    languageOptions: autoImport,
+    languageOptions: {
+      globals: {
+        ...autoImportGlobals.globals,
+      },
+    },
     rules: {
       // 禁止声明未使用的变量。
       'no-unused-vars': [
