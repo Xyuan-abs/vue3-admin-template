@@ -3,8 +3,7 @@
 
  -->
 <script setup>
-import InsForm from '@/components/ins-form/index'
-
+import InsForm from '@/components/ins-form/index.vue'
 import useDialog from '@/hooks/useDialog'
 import { DIALOG_TYPE } from '@/hooks/useDialog'
 

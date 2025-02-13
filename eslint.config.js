@@ -10,7 +10,7 @@ export default [
     ignores: ['node_modules', 'dist', 'public'],
     files: ['**/*.{js,mjs,cjs,vue}'],
   },
-  { languageOptions: { globals: globals.browser } },
+  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   pluginJs.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
   {

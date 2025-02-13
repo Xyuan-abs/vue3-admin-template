@@ -48,6 +48,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'), // 配置别名
+      '@gp': path.resolve('src/plugins/index'),
     },
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
   },
@@ -57,5 +58,10 @@ export default defineConfig({
   },
   server: {
     hmr: true, // 确保 HMR 启用
+  },
+  css: {
+    preprocessorOptions: {
+      scss: { api: 'modern-compiler' },
+    },
   },
 })

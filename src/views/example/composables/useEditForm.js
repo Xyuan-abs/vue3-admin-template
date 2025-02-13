@@ -31,7 +31,21 @@ export default function (row, dialogType) {
         label: '网点名称',
         value: '',
         element: ELEMENT.INPUT,
-        rules: [{ required: true }],
+        rules: [
+          { required: true },
+          {
+            validator: (rule, value, callback) => {
+              if (value.length < 2) {
+                callback(new Error('长度不能小于2'))
+              } else if (value.length > 10) {
+                callback(new Error('长度不能大于10'))
+              } else {
+                callback()
+              }
+            },
+            trigger: 'blur',
+          },
+        ],
         componentProps: {
           isTrim: false,
         },
