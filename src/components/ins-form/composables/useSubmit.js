@@ -87,8 +87,12 @@ export default function (dynamicFormRef, dynamicForm, emit) {
   }
 
   // 校验字段
-  function validateField(props, callback) {
-    dynamicFormRef.value.validateField(props, callback).catch(() => {})
+  function validateField(name, callback) {
+    console.log('validateField ', name)
+    const index = dynamicForm.form.findIndex((d) => d.name === name)
+    if (index >= 0) {
+      dynamicFormRef.value?.validateField(`form[${index}].value`, callback).catch(() => {})
+    }
   }
 
   return {

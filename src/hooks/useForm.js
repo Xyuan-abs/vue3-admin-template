@@ -5,13 +5,13 @@ import { isFunction } from '@/utils/validate'
 
 import useFetch from './useFetch'
 
-export default function (api) {
+export default function (api, { name = '保存' } = {}) {
   /** 表单实例 */
   const InsFormRef = ref(null)
 
   /** 保存 */
   const { isFetching: isSaving, executeFetch: executeSave } = useFetch(api, {
-    name: '保存',
+    name,
     showSuccessMsg: true,
   })
 

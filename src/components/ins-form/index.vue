@@ -105,7 +105,7 @@ const {
   clearValidate,
 } = useSubmit(dynamicFormRef, props.dynamicForm, emit)
 
-useFormItemLink(props.dynamicForm, clearValidate)
+useFormItemLink(props.dynamicForm, clearValidate, validateField)
 
 /**
  * 重写表单事件
@@ -126,7 +126,7 @@ function overwriteEvents(formItem, index) {
       oldEvent(formItem, index, ...args)
 
       if (key === 'change') {
-        validateField(`form[${index}].value`)
+        validateField(formItem.name)
         emit('change', formItem, index)
       }
     }
@@ -324,8 +324,20 @@ defineExpose({
             v-on="overwriteEvents(formItem, index)"
           />
 
-          <!-- 提示 -->
-          <div v-if="formItem.tip" class="form-item-tip">{{ formItem.tip }}</div>
+          <template #label>
+            <!-- 提示 -->
+            <el-tooltip
+              v-if="formItem.tip"
+              popper-class="form-item-tooltip"
+              effect="dark"
+              :content="formItem.tip"
+              placement="top-start"
+            >
+              <el-icon style="margin-right: 4px; cursor: pointer"><QuestionFilled /></el-icon>
+            </el-tooltip>
+
+            {{ formItem.label }}
+          </template>
         </el-form-item>
       </template>
     </el-form>
@@ -339,6 +351,11 @@ defineExpose({
       flex-grow: 0;
       flex-shrink: 0;
       width: 100%;
+
+      .el-form-item__label {
+        align-items: center;
+      }
+
       .el-input,
       .el-select,
       .el-cascader,
@@ -370,5 +387,10 @@ defineExpose({
       }
     }
   }
+}
+</style>
+<style>
+.form-item-tooltip {
+  max-width: 200px;
 }
 </style>

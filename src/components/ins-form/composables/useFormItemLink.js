@@ -33,9 +33,18 @@ import EventBus from '@/utils/event-bus'
  * @param {*} dynamicForm 动态表单配置对象
  * @returns
  */
-export default function (dynamicForm, clearValidate) {
+export default function (dynamicForm, clearValidate, validateField) {
   let isSettingFormValue = false
-  const linkablePropList = ['required', 'value', 'params', 'disabled', 'hidden', 'isShow', 'custom']
+  const linkablePropList = [
+    'required',
+    'value',
+    'params',
+    'disabled',
+    'hidden',
+    'isShow',
+    'validate',
+    'custom',
+  ]
 
   dynamicForm.form.forEach((formItem) => {
     if (formItem.linkage) {
@@ -80,6 +89,12 @@ export default function (dynamicForm, clearValidate) {
           // 表单项值
           else if (prop === 'value' && !isSettingFormValue) {
             linkageFormItem[prop] = await linkage[prop](newVal)
+          }
+          // 校验
+          else if (prop === 'validate') {
+            if (linkage[prop](newVal)) {
+              validateField(linkageFormItem.name)
+            }
           }
           // 其他
           else {

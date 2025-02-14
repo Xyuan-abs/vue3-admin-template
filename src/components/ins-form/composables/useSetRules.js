@@ -22,7 +22,7 @@ export default function () {
       const requiredRule = rules.find((d) => d.required)
 
       // 设置默认提示
-      if (requiredRule && !requiredRule.message) {
+      if (requiredRule && requiredRule.message === undefined) {
         // 不同类型 表单项对应不同的默认提示语
         const elementTypeMap = [
           [ELEMENT.INPUT, 'inputNumber'],

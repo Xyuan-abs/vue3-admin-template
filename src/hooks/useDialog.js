@@ -85,7 +85,7 @@ export default function (_title, _commonDialogType = DIALOG_TYPE.DEFAULT) {
     dialogVisible.value = true
 
     nextTick(() => {
-      dialogOpenCallback(row.value, dialogType.value)
+      dialogOpenCallback && dialogOpenCallback(row.value, dialogType.value)
     })
   }
 
