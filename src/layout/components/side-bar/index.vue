@@ -4,13 +4,16 @@
 <script setup>
 import Logo from '../Logo.vue'
 import SideBarItem from './Item.vue'
-
-import { asyncRoutes } from '@/router/index.js'
+import { useRouterStore } from '@/store/modules/router.js'
 
 const router = useRouter()
 const routes = useRoute()
 
-const menuList = asyncRoutes
+const routerStore = useRouterStore()
+
+const menuList = computed(() => {
+  return routerStore.routes
+})
 
 const activeMenu = computed(() => {
   const curRoute = routes.matched[routes.matched.length - 1]

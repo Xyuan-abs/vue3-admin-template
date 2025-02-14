@@ -1,24 +1,19 @@
 /**
  * @description 登录、获取用户信息、退出登录、清除token逻辑，不建议修改
  */
-import {
-  getToken,
-  setToken,
-  removeToken,
-  getUserInfo as getUserInfoCache,
-  setUserInfo,
-  removeUserInfo,
-} from '@/utils/auth'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 
 import { gp } from '@/plugins/index'
 
 import { login, getUserInfo } from '@/api/user'
 import { mock } from '@/api/mock'
 
+import { useRouterStore } from './router'
+
 export const useUserStore = defineStore('user', {
   state: () => ({
     token: getToken(),
-    userInfo: getUserInfoCache(),
+    userInfo: null,
   }),
   getters: {
     username: (state) => state.userInfo?.name ?? '',
@@ -33,7 +28,7 @@ export const useUserStore = defineStore('user', {
 
       if (res?.success) {
         setToken(res.data)
-        this.getUserInfo()
+        await this.getUserInfo()
       } else {
         gp.$baseMessage({ message: res?.msg || '登录失败', type: 'error' })
       }
@@ -41,17 +36,24 @@ export const useUserStore = defineStore('user', {
     },
     /* 获取用户信息 */
     async getUserInfo() {
-      const res = await getUserInfo().catch((e) => console.error(e))
+      // const res = await getUserInfo().catch((e) => console.error(e))
+      const res = await mock(
+        {},
+        { role: localStorage.getItem('index') % 2 === 0 ? 'admin' : 'editor' },
+      )
       if (res?.success) {
         this.userInfo = res.data
-        setUserInfo(res.data)
+        const routerStore = useRouterStore()
+        routerStore.setRoutes(res.data.role)
       }
     },
     // user logout
     logout() {
       removeToken() // must remove  token  first
       location.reload()
-      removeUserInfo('userInfo', {})
+
+      const routerStore = useRouterStore()
+      routerStore.resetRoutes()
     },
   },
 })

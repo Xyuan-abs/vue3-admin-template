@@ -22,11 +22,13 @@ export const staticRoutes = [
   },
 ]
 
+export const asyncRoutes = []
+
 /**
  * 动态路由
  *  登录后彩灯访问的路由
  */
-export const asyncRoutes = formatterRoutes([
+export const adminUserRoutes = formatterRoutes([
   {
     path: '/',
     component: Layout,
@@ -51,6 +53,58 @@ export const asyncRoutes = formatterRoutes([
         meta: {
           title: '示例',
           icon: 'Menu',
+        },
+      },
+    ],
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: Layout,
+    meta: {
+      title: '用户管理',
+      icon: 'Tools',
+    },
+    children: [
+      {
+        path: 'userRole',
+        name: 'UserRole',
+        component: () => import('@/views/user/roleManagement/index.vue'),
+        meta: {
+          title: '角色管理',
+        },
+      },
+      {
+        path: 'userMenu',
+        name: 'UserMenu',
+        component: () => import('@/views/user/menuManagement/index.vue'),
+        meta: {
+          title: '菜单管理',
+        },
+      },
+      {
+        path: 'userAccount',
+        name: 'UserAccount',
+        component: () => import('@/views/user/accountManagement/index.vue'),
+        meta: {
+          title: '账号管理',
+        },
+      },
+    ],
+  },
+])
+
+export const normalUserRoutes = formatterRoutes([
+  {
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/dashboard/index.vue'),
+        meta: {
+          title: '首页',
+          icon: 'HomeFilled',
         },
       },
     ],
@@ -87,7 +141,28 @@ export const endRoutes = [
   },
 ]
 
-const routes = [...staticRoutes, ...asyncRoutes, ...endRoutes]
+const routes = [...staticRoutes]
+
+function addRouter(routes) {
+  routes.forEach((route) => {
+    if (!router.hasRoute(route.name)) router.addRoute(route)
+    if (route.children) addRouter(route.children)
+  })
+}
+
+export function setRouter(routes) {
+  addRouter(routes)
+}
+
+export function resetRouter() {
+  const index = localStorage.getItem('index') ?? 1
+  localStorage.setItem('index', +index + 1)
+  // const newRouter = createRouter({
+  //   history: createWebHashHistory(),
+  //   routes: routes, // 初始路由配置（仅保留需要的路由）
+  // })
+  // router.matcher = newRouter.matcher // 替换当前路由实例的匹配器
+}
 
 const router = createRouter({
   history: createWebHashHistory(),

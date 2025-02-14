@@ -4,11 +4,13 @@ import 'nprogress/nprogress.css' // progress bar style
 
 import { getToken } from '@/utils/auth'
 
+import { useUserStore } from './store/modules/user'
+
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login']
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
 
   const hasToken = getToken()
@@ -17,8 +19,15 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next('/')
     } else {
-      next()
-      NProgress.done()
+      const userStore = useUserStore()
+
+      if (!userStore.userInfo) {
+        await userStore.getUserInfo()
+        next({ ...to, replace: true })
+      } else {
+        next()
+        NProgress.done()
+      }
     }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {
