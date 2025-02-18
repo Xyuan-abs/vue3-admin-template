@@ -36,6 +36,7 @@ export const useUserStore = defineStore('user', {
     },
     /* 获取用户信息 */
     async getUserInfo() {
+      console.log('getUserInfo ')
       // const res = await getUserInfo().catch((e) => console.error(e))
       const res = await mock(
         {},
